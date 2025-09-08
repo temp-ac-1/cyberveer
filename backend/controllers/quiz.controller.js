@@ -1,58 +1,134 @@
-// controllers/quizController.js
 import Quiz from "../models/Quiz.model.js";
-import Question from "../models/Question.model.js";
-import UserQuizAttempt from "../models/UserQuizAttempt.model.js";
 import UserProgress from "../models/UserProgress.model.js";
 
-export const getQuizById = async (req, res, next) => {
+/**
+ * GET /api/categories/:slug/quizzes
+ * Fetch all quizzes for a category
+ */
+export const getQuizzesByCategory = async (req, res, next) => {
   try {
-    const quiz = await Quiz.findById(req.params.id).lean();
-    if (!quiz) return res.status(404).json({ message: "Quiz not found" });
+    const { slug } = req.params;
 
-    const questions = await Question.find({ quiz: quiz._id }).select("-correctAnswer").lean();
+    // Find quizzes directly linked to the category
+    const quizzes = await Quiz.find()
+      .populate({
+        path: "category",
+        match: { slug },
+        select: "name slug",
+      })
+      .lean();
 
-    res.json({ ...quiz, questions });
+    const filtered = quizzes.filter((quiz) => quiz.category);
+
+    res.json(filtered);
   } catch (err) {
     next(err);
   }
 };
 
+/**
+ * GET /api/quizzes/:id
+ * Fetch a single quiz with randomized options
+ */
+export const getQuizById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const quiz = await Quiz.findById(id)
+      .populate("category", "name slug")
+      .populate("questions")
+      .lean();
+
+    if (!quiz) {
+      return res.status(404).json({ message: "Quiz not found" });
+    }
+
+    // Randomize options on-the-fly
+    quiz.questions = quiz.questions.map((q) => ({
+      ...q,
+      options: [...q.options].sort(() => Math.random() - 0.5),
+    }));
+
+    res.json(quiz);
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * POST /api/quizzes/:id/submit
+ * Submit answers, evaluate score, update progress
+ */
 export const submitQuiz = async (req, res, next) => {
   try {
-    const userId = req.user.id;
     const { id } = req.params;
-    const { answers } = req.body; // {questionId: answer}
+    const userId = req.user._id;
+    const { answers } = req.body; // { questionId: selectedOption }
 
-    const quiz = await Quiz.findById(id);
-    if (!quiz) return res.status(404).json({ message: "Quiz not found" });
+    const quiz = await Quiz.findById(id).populate("questions");
+    if (!quiz) {
+      return res.status(404).json({ message: "Quiz not found" });
+    }
 
-    const questions = await Question.find({ quiz: id });
-
-    let score = 0;
-    const results = questions.map((q) => {
-      const userAnswer = answers[q._id];
-      const correct = String(userAnswer).trim() === String(q.correctAnswer).trim();
-      if (correct) score += q.points || 1;
-      return { questionId: q._id, userAnswer, correct };
-    });
-
-    // Save attempt
-    const attempt = await UserQuizAttempt.create({
+    // Check if user already submitted this quiz
+    let progress = await UserProgress.findOne({
       user: userId,
-      quiz: id,
-      answers: results,
-      score,
-      totalQuestions: questions.length,
+      category: quiz.category._id,
     });
 
-    // Update progress
-    await UserProgress.findOneAndUpdate(
-      { user: userId, quiz: id },
-      { status: "completed", score },
-      { upsert: true, new: true }
+    if (!progress) {
+      progress = new UserProgress({
+        user: userId,
+        category: quiz.category._id,
+        completedLessons: [],
+        completedQuizzes: [],
+        achievements: [],
+      });
+    }
+
+    const alreadyAttempted = progress.completedQuizzes.find(
+      (q) => q.quiz.toString() === quiz._id.toString()
     );
 
-    res.json({ message: "Quiz submitted", score, results, attemptId: attempt._id });
+    if (alreadyAttempted) {
+      return res.status(400).json({
+        message: "You have already attempted this quiz",
+        previousResult: alreadyAttempted,
+      });
+    }
+
+    let score = 0;
+    let correctAnswers = [];
+
+    quiz.questions.forEach((q) => {
+      const userAnswer = answers[q._id];
+      const isCorrect = q.correctAnswer === userAnswer;
+
+      if (isCorrect) score += q.points;
+      correctAnswers.push({
+        questionId: q._id,
+        userAnswer,
+        correctAnswer: q.correctAnswer,
+        isCorrect,
+        explanation: q.explanation,
+      });
+    });
+
+    // Save quiz result in user progress
+    progress.completedQuizzes.push({
+      quiz: quiz._id,
+      score,
+    });
+
+    await progress.save();
+
+    res.json({
+      message: "Quiz submitted successfully",
+      score,
+      totalPoints: quiz.questions.reduce((acc, q) => acc + q.points, 0),
+      correctAnswers,
+      progress,
+    });
   } catch (err) {
     next(err);
   }

@@ -14,6 +14,9 @@ import { errorHandler } from "./middlewares/errorHandler.middleware.js";
 import "./config/passport.js";
 import cookieParser from "cookie-parser";
 import categoryRoutes from "./routes/category.route.js";
+import lessonRoutes from "./routes/lesson.route.js";
+import userProgressRoutes from "./routes/userProgress.route.js";
+import quizRoutes from "./routes/quiz.route.js";
 
 dotenv.config();
 const app = express();
@@ -38,6 +41,9 @@ app.use(passport.session());
 app.use("/api/users", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/quizzes", quizRoutes);
+app.use("/api/lessons", lessonRoutes);
+app.use("/api/progress", userProgressRoutes);
 
 app.use(errorHandler);
 
