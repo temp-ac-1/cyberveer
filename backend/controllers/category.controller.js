@@ -119,3 +119,118 @@ export const getCategoryDetail = async (req, res, next) => {
     next(err);
   }
 };
+
+
+/**
+ * GET /api/category/:slug/subcategories
+ * Fetch all subcategories for a category
+ */
+export const getSubcategoriesByCategory = async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+
+    const category = await Category.findOne({ slug });
+    if (!category) return res.status(404).json({ message: "Category not found" });
+
+    const subcategories = await Subcategory.find({ category: category._id }).select(
+      "name slug"
+    );
+
+    res.json(subcategories);
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * GET /api/category/:slug/lessons
+ * Fetch all lessons grouped by subcategory for a category
+ */
+export const getLessonsByCategory = async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    const userId = req.user?._id;
+
+    const category = await Category.findOne({ slug });
+    if (!category) return res.status(404).json({ message: "Category not found" });
+
+    const subcategories = await Subcategory.find({ category: category._id });
+
+    const results = [];
+
+    for (const sub of subcategories) {
+      const lessons = await Lesson.find({ subcategory: sub._id }).lean();
+
+      // If userId exists, check completed lessons
+      let completedLessonsIds = [];
+      if (userId) {
+        const progress = await UserProgress.findOne({ user: userId, category: category._id });
+        if (progress) completedLessonsIds = progress.completedLessons.map((l) => l.toString());
+      }
+
+      const formattedLessons = lessons.map((l) => ({
+        id: l._id,
+        title: l.title,
+        difficulty: l.difficulty,
+        completed: completedLessonsIds.includes(l._id.toString()),
+      }));
+
+      results.push({
+        subcategoryId: sub._id,
+        subcategoryName: sub.name,
+        lessons: formattedLessons,
+      });
+    }
+
+    res.json(results);
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * POST /api/categories
+ * Create a new category with optional achievements & subcategories
+ */
+export const createCategory = async (req, res, next) => {
+  try {
+    const {
+      title,
+      description,
+      slug,
+      avatar,
+      difficulty,
+      estimatedTime,
+      overallProgress,
+      totalQuizzes,
+      completedQuizzes,
+      participants,
+      rating,
+      pointsEarned,
+      achievements = [],
+      subcategories = [],
+    } = req.body;
+
+    const category = new Category({
+      title,
+      description,
+      slug,
+      avatar,
+      difficulty,
+      estimatedTime,
+      overallProgress,
+      totalQuizzes,
+      completedQuizzes,
+      participants,
+      rating,
+      pointsEarned,
+      achievements,
+      subcategories,
+    });
+
+    await category.save();
+    res.status(201).json(category);
+  } catch (err) {
+    next(err);
+  }
+};

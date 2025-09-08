@@ -127,3 +127,40 @@ export const completeLesson = async (req, res, next) => {
     next(err);
   }
 };
+
+
+/**
+ * POST /api/lessons
+ */
+export const createLesson = async (req, res, next) => {
+  try {
+    const {
+      title,
+      slug,
+      content,
+      categoryId,
+      subcategoryId,
+      order,
+      estimatedTimeMinutes,
+      tags,
+      published
+    } = req.body;
+
+    const lesson = new Lesson({
+      title,
+      slug,
+      content,
+      categoryId,
+      subcategoryId,
+      order,
+      estimatedTimeMinutes,
+      tags,
+      published
+    });
+
+    await lesson.save();
+    res.status(201).json(lesson);
+  } catch (err) {
+    next(err);
+  }
+};

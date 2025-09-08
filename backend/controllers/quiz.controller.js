@@ -133,3 +133,42 @@ export const submitQuiz = async (req, res, next) => {
     next(err);
   }
 };
+
+
+// POST /api/quizzes
+export const createQuiz = async (req, res, next) => {
+    try {
+      const {
+        title,
+        category,
+        subcategoryId,
+        lessonId,
+        difficulty,
+        type,
+        questions,
+        timeLimit,
+        passingScore
+      } = req.body;
+  
+      const newQuiz = new Quiz({
+        title,
+        category,
+        subcategoryId,
+        lessonId,
+        difficulty,
+        type,
+        questions,
+        timeLimit,
+        passingScore
+      });
+  
+      await newQuiz.save();
+  
+      res.status(201).json({
+        message: "Quiz created successfully",
+        quiz: newQuiz
+      });
+    } catch (err) {
+      next(err);
+    }
+  };

@@ -41,7 +41,6 @@ const Categories = () => {
 
   const dispatch = useDispatch();
   const { categories, loading } = useSelector((store)=>store.category);
-
   const filteredCategories = useMemo(() => {
     if (!categories) return [];
 

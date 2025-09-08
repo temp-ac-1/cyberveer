@@ -10,7 +10,7 @@ import {
 const router = express.Router();
 
 // Subcategories belong to categories
-router.post("/", createSubcategory);
+router.post("/create", createSubcategory);
 router.get("/category/:categoryId", listSubcategoriesByCategory);
 router.get("/:id", getSubcategoryById);
 router.put("/:id", updateSubcategory);

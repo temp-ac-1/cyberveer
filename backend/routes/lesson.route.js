@@ -1,6 +1,6 @@
 // backend/routes/lessons.route.js
 import express from "express";
-import { getLessonById, completeLesson, listLessonsByCategory } from "../controllers/lesson.controller.js";
+import { getLessonById, completeLesson, listLessonsByCategory, createLesson } from "../controllers/lesson.controller.js";
 
 const router = express.Router();
 
@@ -9,4 +9,6 @@ const router = express.Router();
 router.get("/:id", getLessonById); 
 router.patch("/:id/complete", completeLesson);
 router.get("/categories/:slug/lessons", listLessonsByCategory);
+router.post("/", createLesson);
+
 export default router;
