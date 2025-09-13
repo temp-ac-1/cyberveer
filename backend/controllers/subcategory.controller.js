@@ -1,12 +1,18 @@
 import Subcategory from "../models/Subcategory.model.js";
 import Category from "../models/Category.model.js";
+import Lesson from "../models/Lesson.model.js";
 
 // List subcategories by category
 export const listSubcategoriesByCategory = async (req, res, next) => {
   try {
-    const { categoryId } = req.params;
-
-    const subcategories = await Subcategory.find({ categoryId })
+    const { categorySlug } = req.params;
+    const category = await Category.findOne({slug: categorySlug});
+    const subcategories = await Subcategory.find({ categoryId: category._id })
+      .populate({
+        path: 'lessons',
+        select: 'title',  // We only want to populate the 'title' field from lessons
+        model: Lesson
+      })
       .sort({ order: 1 })
       .lean();
 
@@ -16,13 +22,20 @@ export const listSubcategoriesByCategory = async (req, res, next) => {
   }
 };
 
-// Get single subcategory
+// Get single subcategory with lesson titles
 export const getSubcategoryById = async (req, res, next) => {
   try {
-    const subcategory = await Subcategory.findById(req.params.id);
+    const subcategory = await Subcategory.findById(req.params.id)
+      .populate({
+        path: 'lessons',
+        select: 'title',  // We only want to populate the 'title' field from lessons
+        model: Lesson
+      });
+
     if (!subcategory) {
       return res.status(404).json({ success: false, message: "Subcategory not found" });
     }
+
     res.json({ success: true, subcategory });
   } catch (err) {
     next(err);

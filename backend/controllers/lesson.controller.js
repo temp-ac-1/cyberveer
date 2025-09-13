@@ -1,3 +1,4 @@
+import Category from "../models/Category.model.js";
 import Lesson from "../models/Lesson.model.js";
 import UserProgress from "../models/UserProgress.model.js";
 
@@ -11,11 +12,8 @@ export const getLessonById = async (req, res, next) => {
     const userId = req.user?._id;
 
     const lesson = await Lesson.findById(id)
-      .populate("subcategory", "name slug")
-      .populate({
-        path: "subcategory",
-        populate: { path: "category", select: "name slug" }
-      })
+      .populate("subcategoryId", "name")
+      .populate("categoryId", "name slug")
       .lean();
 
     if (!lesson) {
@@ -43,30 +41,54 @@ export const getLessonById = async (req, res, next) => {
  * GET /api/categories/:slug/lessons
  * Fetch all lessons for a category by slug
  */
-export const listLessonsByCategory = async (req, res, next) => {
+export const getLessonsByCategory = async (req, res, next) => {
   try {
     const { slug } = req.params;
     const category = await Category.findOne({ slug });
     if (!category) {
       return res.status(404).json({ message: "Category not found" });
     }
-
-    const lessons = await Lesson.find()
-      .populate({
-        path: "subcategory",
-        match: { category: category._id },
-        select: "name slug",
-      })
+    // Fetch lessons linked to this category directly
+    const lessons = await Lesson.find({ categoryId: category._id })
+      .populate("subcategoryId", "name")
       .lean();
 
-    // Filter lessons that actually belong to the category
-    const filtered = lessons.filter(l => l.subcategory);
-
-    res.json({ category: category.name, lessons: filtered });
+    res.json({ success: true, category: category.title, lessons });
   } catch (err) {
     next(err);
   }
 };
+
+
+/**
+ * GET /api/lessons/by-lesson/:lessonId
+ * Returns all lessons in the same subcategory as the given lessonId
+ */
+export const getLessonsBySubCategory = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    // Step 1: Find the lesson by ID
+    const lesson = await Lesson.findById(slug);
+    if (!lesson) {
+      return res.status(404).json({ message: "Lesson not found" });
+    }
+
+    // Step 2: Use its subcategoryId to get all lessons in that subcategory
+    const lessons = await Lesson.find({
+      subcategoryId: lesson.subcategoryId,
+    }).sort({ order: 1, createdAt: 1 }); // optional: keep them ordered
+
+    return res.status(200).json({
+      subcategoryId: lesson.subcategoryId,
+      total: lessons.length,
+      lessons,
+    });
+  } catch (error) {
+    console.error("Error fetching lessons by lessonId:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 
 /**
  * PATCH /api/lessons/:id/complete
@@ -77,15 +99,14 @@ export const completeLesson = async (req, res, next) => {
     const { id } = req.params;
     const userId = req.user._id;
 
-    const lesson = await Lesson.findById(id).populate({
-      path: "subcategory",
-      populate: { path: "category" }
-    });
+    const lesson = await Lesson.findById(id)
+      .populate("subcategoryId")
+      .populate("categoryId");
     if (!lesson) {
       return res.status(404).json({ message: "Lesson not found" });
     }
 
-    const categoryId = lesson.subcategory.category._id;
+    const categoryId = lesson.categoryId;
 
     let progress = await UserProgress.findOne({
       user: userId,
@@ -109,7 +130,7 @@ export const completeLesson = async (req, res, next) => {
     }
 
     // Calculate updated progress
-    const totalLessons = await Lesson.countDocuments({ "subcategory.category": categoryId });
+    const totalLessons = await Lesson.countDocuments({ categoryId });
     const lessonsCompleted = progress.completedLessons.length;
 
     const percentage =

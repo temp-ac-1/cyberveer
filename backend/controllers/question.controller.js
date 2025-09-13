@@ -45,3 +45,25 @@ export const createQuestion = async (req, res, next) => {
     next(err);
   }
 };
+
+
+
+export const createMultiQuestions = async (req, res, next) => {
+  try {
+    const questions = req.body; // Expecting an array of questions
+    if (!Array.isArray(questions) || questions.length === 0) {
+      return res.status(400).json({ message: "Please provide an array of questions" });
+    }
+
+    // Insert multiple questions at once
+    const newQuestions = await Question.insertMany(questions);
+    const ids = newQuestions.map((q) => q._id);
+
+    res.status(201).json({
+      message: `${ids.length} questions created successfully`,
+      questions: ids
+    });
+  } catch (err) {
+    next(err);
+  }
+};

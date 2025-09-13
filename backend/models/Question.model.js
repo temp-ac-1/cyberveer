@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 
 const QuestionSchema = new mongoose.Schema({
   category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
+  subcategoryId: { type: mongoose.Schema.Types.ObjectId, ref: "Subcategory", required: true },
+  lessonId: { type: mongoose.Schema.Types.ObjectId, ref: "Lesson", required: true },
 
   type: { 
     type: String, 
@@ -19,26 +21,25 @@ const QuestionSchema = new mongoose.Schema({
   question: { type: String, required: true },
 
   // For MCQ / TrueFalse
-  options: [{ text: String }],  // ["A", "B", "C", "D"]
-  correctIndex: { type: Number },  // index of correct option (MCQ/TF)
+  options: [{ type: String }],  
+  correctIndex: { type: Number },  
 
   // For Fill in the Blank
   answer: { type: String },
 
   // For Scenarios / Practicals
-  scenarioData: { type: String },      // case study / description
-  practicalInstructions: { type: String }, // hands-on exercise
+  scenarioData: { type: String },      
+  practicalInstructions: { type: String }, 
 
   explanation: { type: String },
-  resources: [{ type: String }],       // optional links, images, etc.
-  tags: [{ type: String }],            // e.g., ["encryption", "SQLi"]
-
+  resources: [{ type: String }],       
+  tags: [{ type: String }],            
 
   points: { type: Number, default: 5 },
   createdAt: { type: Date, default: Date.now }
 });
 
-// Compound index for fast queries
-QuestionSchema.index({ category: 1, type: 1, difficulty: 1 });
+// Index for faster lookups
+QuestionSchema.index({ lessonId: 1, subcategoryId: 1, category: 1 });
 
 export default mongoose.model("Question", QuestionSchema);

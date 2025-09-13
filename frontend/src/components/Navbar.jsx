@@ -20,7 +20,7 @@ const Navbar = () => {
     { name: 'Home', href: '/', current: location.pathname === '/' },
     { name: 'Categories', href: '/categories', current: location.pathname === '/categories' },
     { name: 'Blog', href: '/Blog', current: location.pathname === '/Blog' },
-    { name: 'Resources', href: '/resources', current: location.pathname === '/resources' },
+    { name: 'Quiz', href: '/quiz', current: location.pathname === '/quiz' },
     { name: 'About', href: '/about-us', current: location.pathname === '/about-us' },
   ];
 

@@ -1,59 +1,34 @@
-// hooks/useLesson.js
+// hooks/useGetLessons.js
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchLessonStart,
-  fetchLessonSuccess,
-  fetchLessonFailure,
-  completeLessonStart,
-  completeLessonSuccess,
-  completeLessonFailure,
-} from "../redux/lessonsSlice";
+import { useEffect } from "react";
+import { setLessonsBySubCategory, setLessonsLoading } from "@/redux/lessonsSlice";
+import axios from "axios";
 
-export const useLesson = () => {
+export const useGetLessons = (lessonId) => {
+  console.log("called");
   const dispatch = useDispatch();
-  const { currentLesson, loading, error, completionStatus } = useSelector(
-    (state) => state.lessons
-  );
-
-  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-
-  // Fetch lesson by ID
-  const fetchLessonById = async (id) => {
-    try {
-      dispatch(fetchLessonStart());
-      const res = await fetch(`${API_BASE}/lessons/${id}`);
-      if (!res.ok) throw new Error("Failed to fetch lesson");
-      const data = await res.json();
-      dispatch(fetchLessonSuccess(data));
-    } catch (err) {
-      dispatch(fetchLessonFailure(err.message));
+  useEffect(() => {
+    const fetchLessonsBySubCategory = async () => {
+      try {
+        console.log("calling");
+        dispatch(setLessonsLoading(true));
+        const res = await axios.get(
+          `http://localhost:5000/api/lessons/subcategories/${lessonId}`,
+          { withCredentials: true }
+        );
+        console.log(res.data.lessons);
+        dispatch(setLessonsBySubCategory(res.data.lessons));
+      } catch (error) {
+        console.log("Error fetching lessons:", error);
+      } finally {
+        dispatch(setLessonsLoading(false));
+      }
+    };
+  
+    if (lessonId) {
+      fetchLessonsBySubCategory();
     }
-  };
-
-  // Mark lesson as completed
-  const completeLesson = async (id, token) => {
-    try {
-      dispatch(completeLessonStart());
-      const res = await fetch(`${API_BASE}/lessons/${id}/complete`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!res.ok) throw new Error("Failed to complete lesson");
-      const data = await res.json();
-      dispatch(completeLessonSuccess(data.progress));
-    } catch (err) {
-      dispatch(completeLessonFailure(err.message));
-    }
-  };
-
-  return {
-    currentLesson,
-    loading,
-    error,
-    completionStatus,
-    fetchLessonById,
-    completeLesson,
-  };
+  }, [lessonId, dispatch]);
 };
+
+export default useGetLessons;

@@ -1,8 +1,12 @@
+import Category from "../models/Category.model.js";
+import Lesson from "../models/Lesson.model.js";
+import Question from "../models/Question.model.js";
 import Quiz from "../models/Quiz.model.js";
+import Subcategory from "../models/Subcategory.model.js";
 import UserProgress from "../models/UserProgress.model.js";
 
 /**
- * GET /api/categories/:slug/quizzes
+ * GET /api/quizzes/categories/:slug
  * Fetch all quizzes for a category
  */
 export const getQuizzesByCategory = async (req, res, next) => {
@@ -172,3 +176,109 @@ export const createQuiz = async (req, res, next) => {
       next(err);
     }
   };
+
+  /**
+ * Create Lesson-level Quiz
+ */
+  export const createLessonQuiz = async (req, res) => {
+    try {
+      const { title, description, lessonId, difficulty, type, timeLimit, passingScore } = req.body;
+  
+      const lesson = await Lesson.findById(lessonId).populate("subcategoryId");
+      if (!lesson) return res.status(404).json({ message: "Lesson not found" });
+  
+      const questions = await Question.find({ lessonId });
+  
+      const totalPoints = questions.reduce((sum, q) => sum + q.points, 0);
+  
+      const quiz = new Quiz({
+        title,
+        description,
+        category: lesson.categoryId, 
+        subcategoryId: lesson.subcategoryId,
+        lessonId,
+        difficulty,
+        level: "lesson",
+        type,
+        questions: questions.map(q => q._id),
+        timeLimit,
+        totalPoints,
+        passingScore
+      });
+  
+      await quiz.save();
+      res.status(201).json({message:"lesson quiz created", id: quiz._id});
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+/**
+ * Create Subcategory-level Quiz
+ */
+export const createSubcategoryQuiz = async (req, res) => {
+  try {
+    const { title, description, category, subcategoryId, difficulty, type, timeLimit, passingScore } = req.body;
+
+    const subcategory = await Subcategory.findById(subcategoryId).populate("categoryId");
+    if (!subcategory) return res.status(404).json({ message: "Subcategory not found" });
+
+    const questions = await Question.find({ subcategoryId });
+
+    const totalPoints = questions.reduce((sum, q) => sum + q.points, 0);
+
+    const quiz = new Quiz({
+      title,
+      description,
+      category,
+      subcategoryId,
+      difficulty,
+      level: "subcategory",
+      type,
+      questions: questions.map(q => q._id),
+      timeLimit,
+      totalPoints,
+      passingScore
+    });
+
+    await quiz.save();
+    res.status(201).json({message:"sub category quiz created", id: quiz._id});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+/**
+ * Create Category-level Quiz
+ */
+export const createCategoryQuiz = async (req, res) => {
+  try {
+    const { title, description, categoryId, difficulty, type, timeLimit, passingScore } = req.body;
+
+    const category = await Category.findById(categoryId);
+    if (!category) return res.status(404).json({ message: "Category not found" });
+
+    const questions = await Question.find({ category: categoryId });
+
+    const totalPoints = questions.reduce((sum, q) => sum + q.points, 0);
+
+    const quiz = new Quiz({
+      title,
+      description,
+      category: categoryId,
+      difficulty,
+      level: "category",
+      type,
+      questions: questions.map(q => q._id),
+      timeLimit,
+      totalPoints,
+      passingScore
+    });
+
+    await quiz.save();
+    res.status(201).json({message:"category quiz created", id: quiz._id});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

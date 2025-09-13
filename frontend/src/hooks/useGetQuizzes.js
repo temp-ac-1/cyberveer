@@ -1,4 +1,4 @@
-// hooks/useQuiz.js
+// hooks/useGetQuizzes.js
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchQuizzesStart,
@@ -13,7 +13,7 @@ import {
   clearSubmission,
 } from "../redux/quizzesSlice";
 
-export const useQuiz = () => {
+export const useGetQuizzes = () => {
   const dispatch = useDispatch();
   const { quizzesByCategory, currentQuiz, loading, error, submissionResult } =
     useSelector((state) => state.quizzes);
@@ -24,7 +24,7 @@ export const useQuiz = () => {
   const fetchQuizzesByCategory = async (slug) => {
     try {
       dispatch(fetchQuizzesStart());
-      const res = await fetch(`${API_BASE}/quiz/category/${slug}/quizzes`);
+      const res = await fetch(`${API_BASE}/quizzes/categories/${slug}`);
       if (!res.ok) throw new Error("Failed to fetch quizzes");
       const data = await res.json();
       dispatch(fetchQuizzesSuccess({ slug, quizzes: data }));
@@ -37,7 +37,7 @@ export const useQuiz = () => {
   const fetchQuizById = async (id) => {
     try {
       dispatch(fetchQuizStart());
-      const res = await fetch(`${API_BASE}/quiz/${id}`);
+      const res = await fetch(`${API_BASE}/quizzes/${id}`);
       if (!res.ok) throw new Error("Failed to fetch quiz");
       const data = await res.json();
       dispatch(fetchQuizSuccess(data));
@@ -50,7 +50,7 @@ export const useQuiz = () => {
   const submitQuiz = async (id, answers, token) => {
     try {
       dispatch(submitQuizStart());
-      const res = await fetch(`${API_BASE}/quiz/${id}/submit`, {
+      const res = await fetch(`${API_BASE}/quizzes/${id}/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

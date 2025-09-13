@@ -4,6 +4,7 @@ import categoriesSlice from "./categoriesSlice.js";
 import quizzesReducer from "./quizzesSlice";
 import lessonsReducer from "./lessonsSlice";
 import progressReducer from "./progressSlice";
+import subcategoriesReducer from "./subcategoriesSlice";
 
 import {
   persistReducer,
@@ -25,6 +26,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     auth: authSlice,
     category: categoriesSlice,
+    subcategory: subcategoriesReducer,
     quizzes: quizzesReducer,
     lessons: lessonsReducer,
     progress: progressReducer,

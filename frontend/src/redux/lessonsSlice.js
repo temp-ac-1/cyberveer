@@ -5,47 +5,25 @@ const lessonsSlice = createSlice({
   name: "lessons",
   initialState: {
     currentLesson: null,
-    loading: false,
+    lessonsByCategory: {}, // { [slug]: [lessonObjects] }
+    lessonsBySubCategory: [],
+    lessonsLoading: false,
     error: null,
     completionStatus: null, // { lessonsCompleted, totalLessons, percentage }
   },
   reducers: {
-    fetchLessonStart: (state) => {
-      state.loading = true;
-      state.error = null;
-      state.currentLesson = null;
+    setLessonsBySubCategory: (state, action) =>{
+      state.lessonsBySubCategory = action.payload;
     },
-    fetchLessonSuccess: (state, action) => {
-      state.loading = false;
-      state.currentLesson = action.payload;
-    },
-    fetchLessonFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-
-    completeLessonStart: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    completeLessonSuccess: (state, action) => {
-      state.loading = false;
-      state.completionStatus = action.payload;
-    },
-    completeLessonFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
+    setLessonsLoading: (state, action) => {
+      state.loading = action.payload;
+    }
   },
 });
 
 export const {
-  fetchLessonStart,
-  fetchLessonSuccess,
-  fetchLessonFailure,
-  completeLessonStart,
-  completeLessonSuccess,
-  completeLessonFailure,
+  setLessonsBySubCategory,
+  setLessonsLoading,
 } = lessonsSlice.actions;
 
 export default lessonsSlice.reducer;
