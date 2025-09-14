@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 const useGetSubcategories = (categorySlug) => {
   const dispatch = useDispatch();
   const { subcategories, loading } = useSelector((store) => store.subcategory);
+
   useEffect(() => {
     const fetchSubcategories = async () => {
       try {
@@ -22,13 +23,13 @@ const useGetSubcategories = (categorySlug) => {
         dispatch(setSubcategoriesLoading(false));
       }
     };
-  
-    if (categorySlug && !subcategories[categorySlug]) {
-      fetchSubcategories();
-    }
-  }, [categorySlug, dispatch]);  // ✅ removed subcategories
 
-  // return { subcategories: subcategories[categorySlug] || null, loading };
+    if (categorySlug) {
+      fetchSubcategories(); // ✅ Always call when slug is present
+    }
+  }, [categorySlug]); // ✅ No subcategories in deps
+
+  // return { subcategories, loading };
 };
 
 export default useGetSubcategories;

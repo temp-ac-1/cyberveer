@@ -4,11 +4,12 @@ import { createSlice } from "@reduxjs/toolkit";
 const subcategoriesSlice = createSlice({
   name: "subcategory",
   initialState: {
-    subcategories: [], // store by categoryId for easier lookup
+    subcategories: [],  // ✅ Keep flat array
     loading: false,
   },
   reducers: {
     setSubcategories: (state, action) => {
+      // ✅ Replace entire array with fetched subcategories
       state.subcategories = action.payload;
     },
     setSubcategoriesLoading: (state, action) => {

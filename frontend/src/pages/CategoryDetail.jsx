@@ -39,13 +39,16 @@ import useGetSubcategories from "@/hooks/useGetSubcategories";
 const CategoryDetail = () => {
   const { slug } = useParams();
   useGetSubcategories(slug);
+
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [showQuizSelector, setShowQuizSelector] = useState(false);
+  const [openedSection, setOpenedSection] = useState(null);
 
   // Get data from Redux store
   const subCategoryData = useSelector(
     (store) => store.subcategory.subcategories
   );
+  
   const categories = useSelector((store) => store.category.categories);
   // const achievements = useSelector(state => state.userProgress.achievements);
   const achievements = [
@@ -82,7 +85,7 @@ const CategoryDetail = () => {
     );
   }
 
-  const [openedSection, setOpenedSection] = useState(subCategoryData[0]._id);
+  
 
   const handleTogglesubcategory = (subcategoryId) => {
     setOpenedSection(subcategoryId);

@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { setAuthUser, setIsLoggedIn } from "@/redux/authSlice";
 import { setSubcategories } from "@/redux/subcategoriesSlice";
+import { setAllBlogs, setFeaturedBlogs } from "@/redux/blogSlice";
 
 export function LogoutConfirmDialog({ open, onOpenChange }) {
   const dispatch = useDispatch();
@@ -27,8 +28,8 @@ export function LogoutConfirmDialog({ open, onOpenChange }) {
       dispatch(setAuthUser(null)); // Set the user data in redux
       dispatch(setIsLoggedIn(false)); // Only set logged in after user data is fetched
       dispatch(setSubcategories([]));
-      dispatch(set)
-
+      dispatch(setFeaturedBlogs(null));
+      dispatch(setAllBlogs(null));
       toast(res.data.message);
 
       onOpenChange(false);

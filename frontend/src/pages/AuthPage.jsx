@@ -549,7 +549,7 @@ const AuthPage = () => {
                         {/* userName */}
                         <div className="space-y-2">
                           <Label htmlFor="userName" className="text-sm font-medium">
-                            userName
+                            Username
                           </Label>
                           <div className="relative">
                             <Input

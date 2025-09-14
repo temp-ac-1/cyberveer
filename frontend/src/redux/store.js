@@ -5,6 +5,7 @@ import quizzesReducer from "./quizzesSlice";
 import lessonsReducer from "./lessonsSlice";
 import progressReducer from "./progressSlice";
 import subcategoriesReducer from "./subcategoriesSlice";
+import blogReducer from "./blogSlice";
 
 import {
   persistReducer,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
     quizzes: quizzesReducer,
     lessons: lessonsReducer,
     progress: progressReducer,
+    blogs: blogReducer,  
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
