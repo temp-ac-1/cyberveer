@@ -18,6 +18,7 @@ import NotFound from "./pages/NotFound";
 import ProtectedRoutes from "./components/ProtectedRoute";
 import useAuthCheck from "./hooks/useAuthCheck";
 import AboutUs from "./pages/AboutUs";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 const browserRouter = createBrowserRouter([
   { path: "/", element: <ProtectedRoutes><HomePage /></ProtectedRoutes> },
@@ -34,6 +35,7 @@ const browserRouter = createBrowserRouter([
   { path: "/login", element: <AuthPage /> },
   { path: "/signup", element: <AuthPage /> },
   { path: "/auth", element: <AuthPage /> },
+  { path: "/admin/dashboard", element: <AdminDashboard /> },
   { path: "*", element: <NotFound /> }
 ]);
 
