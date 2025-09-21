@@ -1,8 +1,5 @@
 import "./App.css";
-import {
-  createBrowserRouter,
-  RouterProvider
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
@@ -19,24 +16,120 @@ import ProtectedRoutes from "./components/ProtectedRoute";
 import useAuthCheck from "./hooks/useAuthCheck";
 import AboutUs from "./pages/AboutUs";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import QuizCategorySelector from "./components/QuizCategorySelector";
+import QuizTypeSelection from "./components/QuizTypeSelection";
 
 const browserRouter = createBrowserRouter([
-  { path: "/", element: <ProtectedRoutes><HomePage /></ProtectedRoutes> },
-  { path: "/categories", element: <ProtectedRoutes><Categories /></ProtectedRoutes> },
-  { path: "/category/:slug", element: <ProtectedRoutes><CategoryDetail /></ProtectedRoutes> },
-  { path: "/quiz", element: <ProtectedRoutes><Quiz /></ProtectedRoutes> },
-  { path: "/quiz/:slug", element: <ProtectedRoutes><Quiz /></ProtectedRoutes> },
-  { path: "/blog", element: <ProtectedRoutes><Blog /></ProtectedRoutes> },
-  { path: "/blog/:slug", element: <ProtectedRoutes><BlogDetail /></ProtectedRoutes> },
-  { path: "/blog/write", element: <ProtectedRoutes><WriteBlog /></ProtectedRoutes> },
+  {
+    path: "/",
+    element: (
+      <ProtectedRoutes>
+        <HomePage />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/categories",
+    element: (
+      <ProtectedRoutes>
+        <Categories />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/category/:slug",
+    element: (
+      <ProtectedRoutes>
+        <CategoryDetail />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/quiz",
+    element: (
+      <ProtectedRoutes>
+        <QuizCategorySelector />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/quiz/category/:categoryId",
+    element: (
+      <ProtectedRoutes>
+        <QuizTypeSelection />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/quiz/take/:categoryId/:quizType",
+    element: (
+      <ProtectedRoutes>
+        <Quiz />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/quiz",
+    element: (
+      <ProtectedRoutes>
+        <Quiz />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/quiz/:slug",
+    element: (
+      <ProtectedRoutes>
+        <Quiz />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/blog",
+    element: (
+      <ProtectedRoutes>
+        <Blog />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/blog/:slug",
+    element: (
+      <ProtectedRoutes>
+        <BlogDetail />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/blog/write",
+    element: (
+      <ProtectedRoutes>
+        <WriteBlog />
+      </ProtectedRoutes>
+    ),
+  },
   { path: "/oauth-success", element: <OAuthSuccess /> },
-  { path: "/profile", element: <ProtectedRoutes><Profile /></ProtectedRoutes> },
-  { path: "/about-us", element: <ProtectedRoutes><AboutUs /></ProtectedRoutes> },
+  {
+    path: "/profile",
+    element: (
+      <ProtectedRoutes>
+        <Profile />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/about-us",
+    element: (
+      <ProtectedRoutes>
+        <AboutUs />
+      </ProtectedRoutes>
+    ),
+  },
   { path: "/login", element: <AuthPage /> },
   { path: "/signup", element: <AuthPage /> },
   { path: "/auth", element: <AuthPage /> },
   { path: "/admin/dashboard", element: <AdminDashboard /> },
-  { path: "*", element: <NotFound /> }
+  { path: "*", element: <NotFound /> },
 ]);
 
 function App() {

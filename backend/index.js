@@ -21,6 +21,7 @@ import quizRoutes from "./routes/quiz.route.js";
 import questionRoutes from "./routes/question.route.js";
 import achievmentRoutes from "./routes/achievement.route.js";
 import blogRoutes from "./routes/blog.routes.js";
+import commentRoutes from "./routes/comment.route.js";
 
 dotenv.config();
 const app = express();
@@ -52,6 +53,7 @@ app.use("/api/progress", userProgressRoutes);
 app.use("/api/question", questionRoutes);
 app.use("/api/achievement", achievmentRoutes);
 app.use("/api/blogs", blogRoutes);
+app.use("/api/comments", commentRoutes);
 
 app.use(errorHandler);
 

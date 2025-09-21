@@ -102,8 +102,8 @@ export const getFeaturedBlogs = async (req, res) => {
         $or: [{ featured: true }, { trending: true }],
         isPublished: true
       })
-        .populate("author", "name avatar")   // get author info
-        .populate("category", "name")        // get category name
+        .populate("author", "fullname avatar")   // get author info
+        .populate("category", "title")        // get category name
         .sort({ publishedAt: -1 })           // newest first
         .limit(6);                           // return top 6 (optional)
   
@@ -117,7 +117,7 @@ export const getFeaturedBlogs = async (req, res) => {
   export const getAllBlogs = async (req, res) => {
     try {
       const blogs = await Blog.find({ isPublished: true })
-        .populate("author", "name avatar")
+        .populate("author", "fullname avatar")
         .populate("category", "title")
         .sort({ publishedAt: -1 }); // newest first
   
