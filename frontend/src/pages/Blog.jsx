@@ -403,16 +403,16 @@ const sortedArticles = [...filteredArticles].sort((a, b) => {
                               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary p-0.5">
                                 <img
                                   src={article.author?.avatar || "/api/placeholder/40/40"}
-                                  alt={article.author?.name || "Author"}
+                                  alt={article.author?.fullname || "Author"}
                                   className="w-full h-full rounded-full bg-card object-cover"
                                 />
                               </div>
                               <div>
                                 <p className="font-medium text-foreground">
-                                  {article.author?.name || "Unknown"}
+                                  {article.author?.fullname || "Unknown"}
                                 </p>
                                 <p className="text-sm text-muted-foreground">
-                                  {article.category?.name || (typeof article.category === "string" ? article.category : "General")}
+                                  {article.category?.title || "General"}
                                 </p>
                               </div>
                             </div>
@@ -475,6 +475,7 @@ const sortedArticles = [...filteredArticles].sort((a, b) => {
                       key={article._id}
                       to={`/blog/${article.slug || article._id}`}
                     >
+                      
                       <Card
                         className={`group hover:shadow-glow transition-all duration-300 cursor-pointer border-border/50 hover:border-primary/30 bg-card/80 backdrop-blur-sm ${
                           viewMode === "list"
@@ -502,7 +503,7 @@ const sortedArticles = [...filteredArticles].sort((a, b) => {
                                   </span>
                                   <span className="text-xs text-muted-foreground">•</span>
                                   <span className="text-xs text-muted-foreground">
-                                    {article.category?.name || (typeof article.category === "string" ? article.category : "General")}
+                                    {article.category?.title || "General"}
                                   </span>
                                 </div>
                                 <h3 className="text-lg font-semibold group-hover:text-primary transition-colors mb-2 line-clamp-1">
@@ -532,16 +533,16 @@ const sortedArticles = [...filteredArticles].sort((a, b) => {
                                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary p-0.5">
                                   <img
                                     src={article.author?.avatar || "/api/placeholder/40/40"}
-                                    alt={article.author?.name || "Author"}
+                                    alt={article.author?.fullname || "Author"}
                                     className="w-full h-full rounded-full bg-card object-cover"
                                   />
                                 </div>
                                 <div>
                                   <p className="font-medium text-foreground">
-                                    {article.author?.name || "Unknown"}
+                                    {article.author?.fullname || "Unknown"}
                                   </p>
                                   <p className="text-sm text-muted-foreground">
-                                    {article.category?.name || (typeof article.category === "string" ? article.category : "General")}
+                                    {article.category?.title || (typeof article.category === "string" ? article.category : "General")}
                                   </p>
                                 </div>
                               </div>

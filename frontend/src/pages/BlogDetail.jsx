@@ -47,6 +47,7 @@ const BlogDetail = () => {
 
   // ✅ Get blogs from Redux
   const { all } = useSelector((state) => state.blogs);
+  const { user } = useSelector((state) => state.auth);
 
   // ✅ Find the blog by slug
   const blogPost = all?.find((blog) => blog.slug === slug);
@@ -251,10 +252,10 @@ const BlogDetail = () => {
                   />
                   <div>
                     <p className="font-semibold text-foreground">
-                      {blogPost.author?.name}
+                      {blogPost.author?.fullname}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {blogPost.author?.title || "Contributor"}
+                      {blogPost.author?.fullname || "Contributor"}
                     </p>
                   </div>
                 </div>
@@ -474,7 +475,7 @@ const BlogDetail = () => {
             </div>
 
             {/* Comments Section */}
-            <CommentSection />
+            <CommentSection blogId={blogPost._id} currentUser={user} />
           </article>
 
           {/* Sidebar - Table of Contents */}
