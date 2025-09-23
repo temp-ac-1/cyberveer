@@ -191,7 +191,7 @@ const sortedArticles = [...filteredArticles].sort((a, b) => {
   
       {/* Modern Hero Section */}
       <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10" />
+        <div className="absolute inset-0 " />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,hsl(var(--primary)/0.1),transparent_70%)]" />
         <div className="container mx-auto max-w-7xl text-center relative z-10">
           <div className="animate-fade-in">

@@ -80,7 +80,7 @@ const AboutUs = () => {
       
       {/* Hero Section */}
       <section className="relative pt-24 pb-16 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-secondary/20" />
+        <div className="absolute inset-0 " />
         <div className="circuit-bg absolute inset-0 opacity-30" />
         
         <div className="max-w-6xl mx-auto relative z-10">
@@ -247,7 +247,7 @@ const AboutUs = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 px-4 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10">
+      <section className="py-16 px-4 ">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6">Ready to Start Your Cybersecurity Journey?</h2>
           <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">

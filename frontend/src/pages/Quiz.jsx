@@ -24,12 +24,47 @@ import { Separator } from '@/components/ui/separator';
 import Navbar from '@/components/Navbar';
 import { useSelector } from 'react-redux';
 
-
 const Quiz = () => {
-  const { categoryId, quizType } = useParams();
+  const { categoryId: rawCategoryId, quizType: rawQuizType } = useParams();
   const navigate = useNavigate();
   const categories = useSelector(state => state.category.categories);
-  
+
+  // Normalize inputs and defensively resolve category from state (works if categories is array or object)
+  const normalizeQuizType = (qt) => {
+    if (!qt) return '';
+    const map = {
+      'mcq-quiz': 'mcq',
+      'mcq': 'mcq',
+      'true-false-quiz': 'true-false',
+      'true-false': 'true-false',
+      'fill-blanks-quiz': 'fill-blanks',
+      'fill-blanks': 'fill-blanks',
+      'fill-blank': 'fill-blanks',
+      'scenario-quiz': 'scenario',
+      'scenario': 'scenario',
+      'practical-quiz': 'mixed',
+      'mixed': 'mixed'
+    };
+    return map[qt] ?? qt;
+  };
+
+  const categoryId = rawCategoryId;
+  const quizTypeRaw = rawQuizType;
+  const quizType = normalizeQuizType(quizTypeRaw);
+
+  // Find category in many possible shapes (object keyed by id/slug or array)
+  let category = null;
+  if (categories) {
+    if (Array.isArray(categories)) {
+      category = categories.find(c => {
+        return c?.slug === categoryId || c?._id === categoryId || c?.id === categoryId;
+      });
+    } else {
+      // object or dictionary
+      category = categories[categoryId] || Object.values(categories).find(c => c?.slug === categoryId || c?._id === categoryId || c?.id === categoryId);
+    }
+  }
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [timeElapsed, setTimeElapsed] = useState(0);
@@ -37,12 +72,10 @@ const Quiz = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [showResults, setShowResults] = useState(false);
 
-  const category = categoryId ? categories[categoryId] : null;
-
   // Generate quiz data based on category and type
   const getQuizData = () => {
     if (!category || !quizType) return null;
-    
+
     const quizTypeNames = {
       'mcq': 'Multiple Choice Quiz',
       'true-false': 'True or False Quiz',
@@ -51,13 +84,15 @@ const Quiz = () => {
       'mixed': 'Mixed Quiz'
     };
 
+    const typeName = quizTypeNames[quizType] || 'Quiz';
+
     return {
       id: `${categoryId}-${quizType}`,
-      title: `${category.title} - ${quizTypeNames}`,
+      title: `${category.title} - ${typeName}`,
       description: `Test your knowledge of ${category.title.toLowerCase()} concepts.`,
       difficulty: category.difficulty,
       category: category.title,
-      timeLimit: quizType === 'mixed' ? 1500 : 900, // 25 min for mixed, 15 min for others
+      timeLimit: quizType === 'mixed' ? 1500 : 900,
       totalPoints: quizType === 'mixed' ? 200 : 100,
       passingScore: 70
     };
@@ -71,7 +106,7 @@ const Quiz = () => {
 
     const baseQuestions = [
       // JavaScript questions
-      ...(categoryId === 'javascript-basics' ? [
+      ...(categoryId === 'network-security' ? [
         {
           id: '1',
           type: 'multiple-choice',
@@ -158,7 +193,7 @@ const Quiz = () => {
       ] : [])
     ];
 
-    // Filter questions based on quiz type
+    // Filter questions based on quiz type (use normalized quizType)
     let questions = baseQuestions;
     if (quizType !== 'mixed') {
       questions = questions.filter(q => {
@@ -170,9 +205,12 @@ const Quiz = () => {
       });
     }
 
+    // Avoid infinite loop if questions empty -> provide graceful fallback
+    if (questions.length === 0) return [];
+
     // Add more questions if needed to meet minimum count
     const minQuestions = quizType === 'mixed' ? 15 : Math.max(questions.length, 8);
-    while (questions.length < minQuestions) {
+    while (questions.length < minQuestions && questions.length > 0) {
       questions = [...questions, ...questions.slice(0, Math.min(questions.length, minQuestions - questions.length))];
     }
 
@@ -229,29 +267,29 @@ const Quiz = () => {
     const questionResults = [];
 
     questions.forEach((question) => {
-      totalPoints += question.points;
+      totalPoints += question.points ?? 0;
       const userAnswer = answers[question.id];
       let isCorrect = false;
-      
+
       if (question.type === 'fill-blank') {
-        isCorrect = userAnswer?.toLowerCase().trim() === question.correctAnswer.toString().toLowerCase();
+        isCorrect = (userAnswer ?? '').toString().toLowerCase().trim() === question.correctAnswer.toString().toLowerCase();
       } else {
         isCorrect = parseInt(userAnswer) === question.correctAnswer;
       }
 
       if (isCorrect) {
         correctCount++;
-        earnedPoints += question.points;
+        earnedPoints += question.points ?? 0;
       }
 
       questionResults.push({
         question,
-        userAnswer: userAnswer || 'No answer',
+        userAnswer: userAnswer ?? 'No answer',
         isCorrect
       });
     });
 
-    const percentage = Math.round((earnedPoints / totalPoints) * 100);
+    const percentage = totalPoints > 0 ? Math.round((earnedPoints / totalPoints) * 100) : 0;
     let rank = 'Needs Improvement';
     if (percentage >= 90) rank = 'Excellent';
     else if (percentage >= 80) rank = 'Good';
@@ -269,83 +307,7 @@ const Quiz = () => {
     };
   };
 
-  const currentQuestion = questions[currentQuestionIndex];
-  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
-  const results = quizCompleted ? calculateResults() : null;
-
-  const renderQuestion = (question) => {
-    const userAnswer = answers[question.id];
-
-    switch (question.type) {
-      case 'multiple-choice':
-      case 'scenario':
-        return (
-          <div className="space-y-4">
-            {question.scenario && (
-              <div className="p-4 bg-muted/50 rounded-lg border-l-4 border-primary">
-                <p className="text-sm font-medium mb-2">Scenario:</p>
-                <p className="text-sm">{question.scenario}</p>
-              </div>
-            )}
-            <RadioGroup
-              value={userAnswer || ''}
-              onValueChange={(value) => handleAnswer(question.id, value)}
-            >
-              {question.options?.map((option, index) => (
-                <div key={index} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-muted/30 transition-colors">
-                  <RadioGroupItem value={index.toString()} id={`option-${index}`} />
-                  <Label 
-                    htmlFor={`option-${index}`} 
-                    className="flex-1 cursor-pointer text-sm"
-                  >
-                    {option}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
-        );
-
-      case 'true-false':
-        return (
-          <RadioGroup
-            value={userAnswer || ''}
-            onValueChange={(value) => handleAnswer(question.id, value)}
-          >
-            {question.options?.map((option, index) => (
-              <div key={index} className="flex items-center space-x-2 p-4 rounded-lg hover:bg-muted/30 transition-colors">
-                <RadioGroupItem value={index.toString()} id={`tf-${index}`} />
-                <Label 
-                  htmlFor={`tf-${index}`} 
-                  className="flex-1 cursor-pointer font-medium"
-                >
-                  {option}
-                </Label>
-              </div>
-            ))}
-          </RadioGroup>
-        );
-
-      case 'fill-blank':
-        return (
-          <div className="space-y-4">
-            <Input
-              placeholder="Enter your answer..."
-              value={userAnswer || ''}
-              onChange={(e) => handleAnswer(question.id, e.target.value)}
-              className="text-lg p-4"
-            />
-            <p className="text-sm text-muted-foreground">
-              Type your answer in the field above. Spelling and case don't matter.
-            </p>
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
-
+  
   const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
       case 'Beginner':
@@ -359,6 +321,7 @@ const Quiz = () => {
     }
   };
 
+  // Guard: if no questions available, show explanatory message and back button
   if (!category || !quizData) {
     return (
       <div className="min-h-screen bg-background">
@@ -434,7 +397,16 @@ const Quiz = () => {
                 </div>
 
                 <Button 
-                  onClick={() => setQuizStarted(true)}
+                  onClick={() => {
+                    // if there are zero questions, show a polite message instead of starting
+                    if (questions.length === 0) {
+                      // keep UX consistent: show an alert and navigate back to types
+                      window.alert('No questions are available for this category + quiz type. Please choose another type or category.');
+                      navigate(`/quiz/category/${categoryId}`);
+                      return;
+                    }
+                    setQuizStarted(true);
+                  }}
                   size="lg" 
                   className="w-full"
                 >
@@ -448,6 +420,9 @@ const Quiz = () => {
       </div>
     );
   }
+
+  // Results computation
+  const results = quizCompleted ? calculateResults() : null;
 
   if (showResults && results) {
     return (
@@ -555,16 +530,16 @@ const Quiz = () => {
                           </Badge>
                           <Badge variant="secondary">{result.question.points} pts</Badge>
                         </div>
-                        
+
                         {result.question.scenario && (
                           <div className="p-3 bg-muted/50 rounded-lg border-l-4 border-primary mb-3">
                             <p className="text-sm font-medium mb-1">Scenario:</p>
                             <p className="text-sm">{result.question.scenario}</p>
                           </div>
                         )}
-                        
+
                         <p className="font-medium mb-3">{result.question.question}</p>
-                        
+
                         {result.question.options && (
                           <div className="space-y-2 mb-3">
                             {result.question.options.map((option, optionIndex) => (
@@ -592,7 +567,7 @@ const Quiz = () => {
                             ))}
                           </div>
                         )}
-                        
+
                         {result.question.type === 'fill-blank' && (
                           <div className="space-y-2 mb-3">
                             <div className="flex gap-4">
@@ -613,7 +588,7 @@ const Quiz = () => {
                             </div>
                           </div>
                         )}
-                        
+
                         <div className="p-3 bg-blue-500/10 rounded-lg border-l-4 border-blue-500">
                           <p className="text-sm font-medium mb-1 text-blue-700">Explanation:</p>
                           <p className="text-sm text-blue-600">{result.question.explanation}</p>
@@ -630,6 +605,107 @@ const Quiz = () => {
       </div>
     );
   }
+
+  // Guard currentQuestion safely
+  const currentQuestion = questions && questions.length > 0 ? questions[currentQuestionIndex] : null;
+  const progress = questions && questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
+
+  // If we somehow got here but there are zero questions — show a fallback
+  if (!currentQuestion) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="pt-20 pb-12">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <Card>
+              <CardHeader>
+                <CardTitle>No questions available</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">There are no questions for this category & quiz type. Please choose a different type or category.</p>
+                <div className="flex justify-center gap-2">
+                  <Button onClick={() => navigate(`/quiz/category/${categoryId}`)} variant="outline">Back</Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const renderQuestion = (question) => {
+    const userAnswer = answers[question.id];
+
+    switch (question.type) {
+      case 'multiple-choice':
+      case 'scenario':
+        return (
+          <div className="space-y-4">
+            {question.scenario && (
+              <div className="p-4 bg-muted/50 rounded-lg border-l-4 border-primary">
+                <p className="text-sm font-medium mb-2">Scenario:</p>
+                <p className="text-sm">{question.scenario}</p>
+              </div>
+            )}
+            <RadioGroup
+              value={userAnswer || ''}
+              onValueChange={(value) => handleAnswer(question.id, value)}
+            >
+              {question.options?.map((option, index) => (
+                <div key={index} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-muted/30 transition-colors">
+                  <RadioGroupItem value={index.toString()} id={`option-${index}`} />
+                  <Label 
+                    htmlFor={`option-${index}`} 
+                    className="flex-1 cursor-pointer text-sm"
+                  >
+                    {option}
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+        );
+
+      case 'true-false':
+        return (
+          <RadioGroup
+            value={userAnswer || ''}
+            onValueChange={(value) => handleAnswer(question.id, value)}
+          >
+            {question.options?.map((option, index) => (
+              <div key={index} className="flex items-center space-x-2 p-4 rounded-lg hover:bg-muted/30 transition-colors">
+                <RadioGroupItem value={index.toString()} id={`tf-${index}`} />
+                <Label 
+                  htmlFor={`tf-${index}`} 
+                  className="flex-1 cursor-pointer font-medium"
+                >
+                  {option}
+                </Label>
+              </div>
+            ))}
+          </RadioGroup>
+        );
+
+      case 'fill-blank':
+        return (
+          <div className="space-y-4">
+            <Input
+              placeholder="Enter your answer..."
+              value={userAnswer || ''}
+              onChange={(e) => handleAnswer(question.id, e.target.value)}
+              className="text-lg p-4"
+            />
+            <p className="text-sm text-muted-foreground">
+              Type your answer in the field above. Spelling and case don't matter.
+            </p>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">

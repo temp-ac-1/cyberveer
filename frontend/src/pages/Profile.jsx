@@ -131,25 +131,25 @@ const Profile = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div className="text-center p-4 rounded-lg bg-card border border-border/50 hover:border-primary/50 transition-colors">
                   <Trophy className="h-6 w-6 mx-auto mb-2 text-cyber-orange" />
-                  <div className="text-2xl font-bold text-foreground">{user?.totalScore?.toLocaleString()}</div>
+                  <div className="text-2xl font-bold text-foreground">{user?.totalScore?.toLocaleString() || 1200}</div>
                   <div className="text-sm text-muted-foreground">Total Score</div>
                 </div>
                 
                 <div className="text-center p-4 rounded-lg bg-card border border-border/50 hover:border-primary/50 transition-colors">
                   <Target className="h-6 w-6 mx-auto mb-2 text-cyber-blue" />
-                  <div className="text-2xl font-bold text-foreground">{user.quizzesCompleted}</div>
+                  <div className="text-2xl font-bold text-foreground">{user.quizzesCompleted || 28}</div>
                   <div className="text-sm text-muted-foreground">Quizzes</div>
                 </div>
                 
                 <div className="text-center p-4 rounded-lg bg-card border border-border/50 hover:border-primary/50 transition-colors">
                   <TrendingUp className="h-6 w-6 mx-auto mb-2 text-success" />
-                  <div className="text-2xl font-bold text-foreground">{user.averageScore}%</div>
+                  <div className="text-2xl font-bold text-foreground">{user.averageScore || 86}%</div>
                   <div className="text-sm text-muted-foreground">Average</div>
                 </div>
                 
                 <div className="text-center p-4 rounded-lg bg-card border border-border/50 hover:border-primary/50 transition-colors">
                   <Users className="h-6 w-6 mx-auto mb-2 text-cyber-purple" />
-                  <div className="text-2xl font-bold text-foreground">{user.rank}</div>
+                  <div className="text-2xl font-bold text-foreground">{user.rank || 13}</div>
                   <div className="text-sm text-muted-foreground">Global Rank</div>
                 </div>
               </div>
@@ -247,19 +247,19 @@ const Profile = () => {
                       
                       <div className="text-center p-4 rounded-lg bg-card/50 border border-border/30">
                         <Trophy className="h-6 w-6 mx-auto mb-2 text-cyber-blue" />
-                        <div className="text-xl font-bold text-foreground">{user.perfectScores}</div>
+                        <div className="text-xl font-bold text-foreground">{user.perfectScores || 12}</div>
                         <div className="text-xs text-muted-foreground">Perfect Scores</div>
                       </div>
                       
                       <div className="text-center p-4 rounded-lg bg-card/50 border border-border/30">
                         <Zap className="h-6 w-6 mx-auto mb-2 text-cyber-purple" />
-                        <div className="text-xl font-bold text-foreground">{user.currentStreak}</div>
+                        <div className="text-xl font-bold text-foreground">{user.currentStreak || 56 }</div>
                         <div className="text-xs text-muted-foreground">Day Streak</div>
                       </div>
                       
                       <div className="text-center p-4 rounded-lg bg-card/50 border border-border/30">
                         <Clock className="h-6 w-6 mx-auto mb-2 text-success" />
-                        <div className="text-xl font-bold text-foreground">{user.fastestTime}</div>
+                        <div className="text-xl font-bold text-foreground">{user.fastestTime || "0:46"}</div>
                         <div className="text-xs text-muted-foreground">Best Time</div>
                       </div>
                     </div>
@@ -512,7 +512,7 @@ const Profile = () => {
                     <div className="space-y-1 text-sm text-muted-foreground">
                       <p>Email: {user.email}</p>
                       <p>Provider: {user.provider || 'Local Account'}</p>
-                      <p>Member since: {user.joinDate}</p>
+                      <p>Member since: {user.createdAt}</p>
                     </div>
                   </div>
                   

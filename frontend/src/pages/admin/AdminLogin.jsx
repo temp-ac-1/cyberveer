@@ -35,7 +35,7 @@ const AdminLogin = () => {
         
         // In a real app, you would store auth tokens here
         localStorage.setItem('adminAuth', 'true');
-        navigate('/admin');
+        navigate('/admin/dashboard');
       } else {
         setError('Invalid username or password');
       }

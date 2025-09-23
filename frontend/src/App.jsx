@@ -16,8 +16,14 @@ import ProtectedRoutes from "./components/ProtectedRoute";
 import useAuthCheck from "./hooks/useAuthCheck";
 import AboutUs from "./pages/AboutUs";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import QuizCategorySelector from "./components/QuizCategorySelector";
-import QuizTypeSelection from "./components/QuizTypeSelection";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./components/admin/AdminLayout";
+import UsersManagement from "./pages/admin/UsersManagement";
+import QuizzesManagement from "./pages/admin/QuizzesManagement";
+import CategoriesManagement from "./pages/admin/CategoriesManagement";
+import SubcategoriesManagement from "./pages/admin/SubcategoriesManagement";
+import UserProgressManagement from "./pages/admin/UserProgressManagement";
+import AdminSettings from "./pages/admin/AdminSettings";
 
 const browserRouter = createBrowserRouter([
   {
@@ -41,30 +47,6 @@ const browserRouter = createBrowserRouter([
     element: (
       <ProtectedRoutes>
         <CategoryDetail />
-      </ProtectedRoutes>
-    ),
-  },
-  {
-    path: "/quiz",
-    element: (
-      <ProtectedRoutes>
-        <QuizCategorySelector />
-      </ProtectedRoutes>
-    ),
-  },
-  {
-    path: "/quiz/category/:categoryId",
-    element: (
-      <ProtectedRoutes>
-        <QuizTypeSelection />
-      </ProtectedRoutes>
-    ),
-  },
-  {
-    path: "/quiz/take/:categoryId/:quizType",
-    element: (
-      <ProtectedRoutes>
-        <Quiz />
       </ProtectedRoutes>
     ),
   },
@@ -128,7 +110,20 @@ const browserRouter = createBrowserRouter([
   { path: "/login", element: <AuthPage /> },
   { path: "/signup", element: <AuthPage /> },
   { path: "/auth", element: <AuthPage /> },
-  { path: "/admin/dashboard", element: <AdminDashboard /> },
+  { path: "/admin/login", element: <AdminLogin /> },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      { path:"dashboard", element: <AdminDashboard /> },
+      { path: "users", element: <UsersManagement /> },
+      { path: "quizzes", element: <QuizzesManagement /> },
+      { path: "categories", element: <CategoriesManagement /> },
+      { path: "subcategories", element: <SubcategoriesManagement /> },
+      { path: "progress", element: <UserProgressManagement /> },
+      { path: "settings", element: <AdminSettings /> },
+    ],
+  },
   { path: "*", element: <NotFound /> },
 ]);
 

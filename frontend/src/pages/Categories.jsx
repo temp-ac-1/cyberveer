@@ -116,7 +116,7 @@ const Categories = () => {
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="text-transparent bg-gradient-cyber bg-clip-text">
+              <span className=" bg-clip-text">
                 Explore Categories
               </span>
             </h1>
