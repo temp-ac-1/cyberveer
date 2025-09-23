@@ -11,7 +11,7 @@ import UserProgress from "../models/UserProgress.model.js";
 export const getAllCategories = async (req, res, next) => {
   try {
     const categories = await Category.find({})
-      .select("name slug description difficulty avatar participants rating createdAt")
+      .select("title slug description difficulty avatar participants rating createdAt")
       .lean();
 
     res.json({

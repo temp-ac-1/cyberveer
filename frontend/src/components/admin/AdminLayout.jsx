@@ -20,7 +20,7 @@ const AdminLayout = () => {
   };
 
   const navItems = [
-    { to: '/admin', icon: Home, label: 'Dashboard', end: true },
+    { to: '/admin/dashboard', icon: Home, label: 'Dashboard', end: true },
     { to: '/admin/users', icon: Users, label: 'Users' },
     { to: '/admin/quizzes', icon: BookOpen, label: 'Quizzes' },
     { to: '/admin/categories', icon: FolderOpen, label: 'Categories' },

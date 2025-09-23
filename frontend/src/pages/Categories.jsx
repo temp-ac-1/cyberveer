@@ -194,6 +194,7 @@ const Categories = () => {
                         </Badge>
                       </div>
                       <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                        {console.log(category)}
                         {category.title}
                       </CardTitle>
                       <CardDescription className="text-sm line-clamp-2">

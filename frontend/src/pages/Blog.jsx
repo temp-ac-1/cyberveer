@@ -371,7 +371,7 @@ const sortedArticles = [...filteredArticles].sort((a, b) => {
               </div>
   
               {/* Featured Articles */}
-              {featured.length > 0 && (
+              {featured?.length > 0 && (
                 <div className="mb-12">
                   <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                     <Star className="w-6 h-6 text-yellow-500" />
