@@ -29,6 +29,8 @@ const AdminDashboard = () => {
     { id: 2, message: '3 users reported login issues', type: 'error' },
   ];
 
+  // console.log(stats)
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
