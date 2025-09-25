@@ -56,7 +56,7 @@ const QuizCategorySelector = () => {
 
           {/* Category cards */}
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {Object.values(categories).map((category) => (
+            {categories && Object.values(categories).map((category) => (
               <Card
                 key={category._id}
                 className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-border/50 hover:border-primary/30"

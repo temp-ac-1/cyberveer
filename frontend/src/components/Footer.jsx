@@ -30,7 +30,7 @@ import { Button } from "@/components/ui/button";
 
 const Footer = () => {
   return (
-    <div className="w-full relative overflow-hidden bg-gray-900/95 backdrop-blur-xl border-t border-cyan-400/40">
+    <div className="w-full relative overflow-hidden bg-card backdrop-blur-xl border-t border-border">
       {/* Animated grid background */}
       <div className="absolute inset-0 opacity-[0.03]">
         <div
@@ -47,7 +47,7 @@ const Footer = () => {
       </div>
 
       {/* Glowing data stream effects */}
-      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/70 to-transparent shadow-[0_0_8px_rgba(0,255,255,0.3)] animate-pulse" />
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/70 to-transparent shadow-[0_0_8px_hsl(var(--primary)_/_0.3)] animate-pulse" />
 
       {/* Main footer */}
       <div className="relative z-10 w-full px-6 sm:px-8 lg:px-12 py-14 mx-auto max-w-7xl">
@@ -64,7 +64,7 @@ const Footer = () => {
                 CYBERVEER
               </span>
             </div>
-            <p className="text-gray-400 mb-7 leading-relaxed">
+            <p className="text-muted-foreground mb-7 leading-relaxed">
               Fortifying digital frontiers through immersive cybersecurity
               education and real-world challenges
             </p>
@@ -78,7 +78,7 @@ const Footer = () => {
               ].map((stat, index) => (
                 <div
                   key={index}
-                  className="text-center lg:text-left px-3 py-2 rounded-lg bg-gray-800/30"
+                  className="text-center lg:text-left px-3 py-2 rounded-lg bg-muted/30"
                 >
                   <div className="flex items-center justify-center lg:justify-start mb-1">
                     <stat.icon className="w-4 h-4 text-cyan-400 mr-2" />
@@ -96,8 +96,8 @@ const Footer = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-12">
             {/* Learning Paths */}
             <div>
-              <h3 className="text-md font-semibold text-cyan-300 mb-4 flex items-center">
-                <BookOpen className="w-4 h-4 mr-2 text-cyan-400" />
+              <h3 className="text-md font-semibold text-primary mb-4 flex items-center">
+                <BookOpen className="w-4 h-4 mr-2 text-primary" />
                 Learning
               </h3>
               <ul className="space-y-2.5">
@@ -110,7 +110,7 @@ const Footer = () => {
                   <li key={index}>
                     <Link
                       to={item.path}
-                      className="text-gray-400 hover:text-cyan-400 transition-all duration-200 text-sm flex items-center group"
+                      className="text-muted-foreground hover:text-primary transition-all duration-200 text-sm flex items-center group"
                     >
                       <ChevronRight className="w-3 h-3 mr-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                       {item.name}
@@ -122,8 +122,8 @@ const Footer = () => {
 
             {/* Resources */}
             <div>
-              <h3 className="text-md font-semibold text-cyan-300 mb-4 flex items-center">
-                <FileText className="w-4 h-4 mr-2 text-cyan-400" />
+              <h3 className="text-md font-semibold text-primary mb-4 flex items-center">
+                <FileText className="w-4 h-4 mr-2 text-primary" />
                 Resources
               </h3>
               <ul className="space-y-2.5">
@@ -136,7 +136,7 @@ const Footer = () => {
                   <li key={index}>
                     <Link
                       to={item.path}
-                      className="text-gray-400 hover:text-cyan-400 transition-all duration-200 text-sm flex items-center group"
+                      className="text-muted-foreground hover:text-primary transition-all duration-200 text-sm flex items-center group"
                     >
                       <ChevronRight className="w-3 h-3 mr-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                       {item.name}
@@ -148,8 +148,8 @@ const Footer = () => {
 
             {/* Support */}
             <div>
-              <h3 className="text-md font-semibold text-cyan-300 mb-4 flex items-center">
-                <MessageSquare className="w-4 h-4 mr-2 text-cyan-400" />
+              <h3 className="text-md font-semibold text-primary mb-4 flex items-center">
+                <MessageSquare className="w-4 h-4 mr-2 text-primary" />
                 Support
               </h3>
               <ul className="space-y-2.5">
@@ -162,7 +162,7 @@ const Footer = () => {
                   <li key={index}>
                     <Link
                       to={item.path}
-                      className="text-gray-400 hover:text-cyan-400 transition-all duration-200 text-sm flex items-center group"
+                      className="text-muted-foreground hover:text-primary transition-all duration-200 text-sm flex items-center group"
                     >
                       <ChevronRight className="w-3 h-3 mr-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                       {item.name}
@@ -175,11 +175,11 @@ const Footer = () => {
         </div>
 
         {/* Middle section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-14 border-t border-cyan-400/20 pt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-14 border-t border-border pt-12">
           {/* Features */}
           <div>
-            <h3 className="text-lg font-semibold text-cyan-300 mb-6 flex items-center">
-              <Sparkles className="w-5 h-5 mr-2 text-cyan-400" />
+            <h3 className="text-lg font-semibold text-primary mb-6 flex items-center">
+              <Sparkles className="w-5 h-5 mr-2 text-primary" />
               Why Choose CyberVeer?
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -210,14 +210,14 @@ const Footer = () => {
                   className="group p-3 rounded-lg hover:bg-gray-800/30 transition-colors"
                 >
                   <div className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-cyan-500/20 to-purple-600/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <feature.icon className="w-4 h-4 text-cyan-400" />
+                  <div className="flex-shrink-0 w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <feature.icon className="w-4 h-4 text-primary" />
                     </div>
                     <div>
-                      <h4 className="text-cyan-300 font-medium mb-1 text-sm group-hover:text-cyan-400 transition-colors">
+                      <h4 className="text-primary font-medium mb-1 text-sm group-hover:text-primary transition-colors">
                         {feature.title}
                       </h4>
-                      <p className="text-gray-400 text-xs">{feature.desc}</p>
+                      <p className="text-muted-foreground text-xs">{feature.desc}</p>
                     </div>
                   </div>
                 </div>
@@ -226,12 +226,12 @@ const Footer = () => {
           </div>
 
           {/* Newsletter */}
-          <div className="bg-gray-800/30 rounded-xl p-6 border border-cyan-400/20 backdrop-blur-sm">
-            <h3 className="text-lg font-semibold text-cyan-300 mb-4 flex items-center">
-              <Terminal className="w-5 h-5 mr-2 text-cyan-400" />
+          <div className="bg-muted/30 rounded-xl p-6 border border-border backdrop-blur-sm">
+            <h3 className="text-lg font-semibold text-primary mb-4 flex items-center">
+              <Terminal className="w-5 h-5 mr-2 text-primary" />
               Stay Updated
             </h3>
-            <p className="text-gray-400 mb-5 text-sm">
+            <p className="text-muted-foreground mb-5 text-sm">
               Get cybersecurity tips, threat alerts, and exclusive content.
             </p>
             <div className="space-y-3">
@@ -239,13 +239,13 @@ const Footer = () => {
                 <input
                   type="email"
                   placeholder="Your email"
-                  className="flex-1 px-4 py-2.5 bg-gray-700/50 border border-cyan-400/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400/50 text-sm"
+                  className="flex-1 px-4 py-2.5 bg-input border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary text-sm"
                 />
-                <Button className="bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-700 hover:to-purple-700 text-white py-2.5 px-4 rounded-lg transition-all duration-200 hover:shadow-[0_0_15px_rgba(0,255,255,0.3)] border-0 text-sm">
+                <Button className="bg-primary text-primary-foreground py-2.5 px-4 rounded-lg transition-all duration-200 hover:shadow-[0_0_15px_hsl(var(--primary)_/_0.3)] border-0 text-sm">
                   Subscribe
                 </Button>
               </div>
-              <p className="text-gray-500 text-xs">
+              <p className="text-muted-foreground text-xs">
                 We respect your privacy. Unsubscribe at any time.
               </p>
             </div>
@@ -253,11 +253,11 @@ const Footer = () => {
         </div>
 
         {/* Bottom */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-t border-cyan-400/20 pt-10">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-t border-border pt-10">
           {/* Copyright */}
           <div className="flex flex-col md:flex-row items-center gap-5">
-            <div className="flex items-center text-gray-500 text-xs">
-              <Code2 className="w-3 h-3 mr-1.5 text-cyan-400" />
+            <div className="flex items-center text-muted-foreground text-xs">
+              <Code2 className="w-3 h-3 mr-1.5 text-primary" />
               <span>Built with</span>
               <Heart className="w-3 h-3 mx-1.5 text-pink-500" />
               <span>by CyberVeer Team © {new Date().getFullYear()}</span>
@@ -274,7 +274,7 @@ const Footer = () => {
                 <a
                   key={index}
                   href="#"
-                  className="p-2 rounded-lg bg-gray-800/40 border border-cyan-400/20 text-gray-400 hover:text-cyan-400 transition-all duration-200 hover:border-cyan-400/30"
+                  className="p-2 rounded-lg bg-card border border-border text-muted-foreground hover:text-primary transition-all duration-200 hover:border-primary/40"
                   aria-label={Social.label}
                 >
                   <Social.icon className="w-3.5 h-3.5" />
@@ -289,7 +289,7 @@ const Footer = () => {
               <Link
                 key={index}
                 to={`/${item.toLowerCase()}`}
-                className="text-gray-500 hover:text-cyan-400 text-xs transition-all duration-200"
+                className="text-muted-foreground hover:text-primary text-xs transition-all duration-200"
               >
                 {item}
               </Link>
@@ -307,7 +307,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom line */}
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent shadow-[0_0_5px_rgba(0,255,255,0.2)] animate-pulse" />
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent shadow-[0_0_5px_hsl(var(--primary)_/_0.2)] animate-pulse" />
     </div>
   );
 };

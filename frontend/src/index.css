@@ -179,6 +179,221 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
+  /* Cyber Neon Theme */
+  [data-theme="cyber"] {
+    --color-primary: 180 100% 50%;
+    --color-secondary: 127 100% 50%;
+    --color-accent: 285 100% 65%;
+    --color-background: 220 27% 6%;
+    --color-foreground: 180 100% 95%;
+    --color-muted: 180 20% 65%;
+
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
+    --card: 220 27% 8%;
+    --card-foreground: var(--color-foreground);
+    --popover: 220 27% 8%;
+    --popover-foreground: var(--color-foreground);
+    --primary: var(--color-primary);
+    --primary-foreground: 220 27% 6%;
+    --secondary: var(--color-secondary);
+    --secondary-foreground: 220 27% 6%;
+    --muted: 220 27% 12%;
+    --muted-foreground: var(--color-muted);
+    --accent: var(--color-accent);
+    --accent-foreground: 220 27% 6%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 180 100% 15%;
+    --input: 220 27% 8%;
+    --ring: var(--color-primary);
+    --cyber-neon: var(--color-primary);
+    --cyber-green: var(--color-secondary);
+    --cyber-purple: var(--color-accent);
+    --cyber-grid: 222 84% 13%;
+  }
+
+  /* Sunset Theme */
+  [data-theme="sunset"] {
+    --color-primary: 12 86% 58%;   /* orange */
+    --color-secondary: 340 82% 60%;/* pink */
+    --color-accent: 48 94% 60%;    /* amber */
+    --color-background: 15 32% 12%;
+    --color-foreground: 30 40% 96%;
+    --color-muted: 30 20% 70%;
+
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
+    --card: 15 30% 14%;
+    --card-foreground: var(--color-foreground);
+    --popover: 15 30% 14%;
+    --popover-foreground: var(--color-foreground);
+    --primary: var(--color-primary);
+    --primary-foreground: 20 30% 8%;
+    --secondary: var(--color-secondary);
+    --secondary-foreground: 20 30% 8%;
+    --muted: 15 25% 20%;
+    --muted-foreground: var(--color-muted);
+    --accent: var(--color-accent);
+    --accent-foreground: 20 30% 8%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 15 25% 22%;
+    --input: 15 25% 22%;
+    --ring: var(--color-primary);
+    --cyber-grid: 15 25% 18%;
+  }
+
+  /* Forest Theme */
+  [data-theme="forest"] {
+    --color-primary: 142 72% 35%;  /* green */
+    --color-secondary: 25 81% 46%; /* earthy */
+    --color-accent: 200 76% 45%;   /* teal/sky */
+    --color-background: 140 20% 8%;
+    --color-foreground: 140 25% 92%;
+    --color-muted: 140 10% 65%;
+
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
+    --card: 140 18% 10%;
+    --card-foreground: var(--color-foreground);
+    --popover: 140 18% 10%;
+    --popover-foreground: var(--color-foreground);
+    --primary: var(--color-primary);
+    --primary-foreground: 140 20% 8%;
+    --secondary: var(--color-secondary);
+    --secondary-foreground: 140 20% 8%;
+    --muted: 140 15% 16%;
+    --muted-foreground: var(--color-muted);
+    --accent: var(--color-accent);
+    --accent-foreground: 140 20% 8%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 140 15% 18%;
+    --input: 140 15% 18%;
+    --ring: var(--color-primary);
+  }
+
+  /* Academic Blue Theme */
+  [data-theme="academic"] {
+    --color-primary: 222 85% 52%;  /* royal blue */
+    --color-secondary: 217 33% 20%;
+    --color-accent: 199 89% 48%;
+    --color-background: 210 20% 98%;
+    --color-foreground: 220 15% 15%;
+    --color-muted: 220 10% 50%;
+
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
+    --card: 0 0% 100%;
+    --card-foreground: var(--color-foreground);
+    --popover: 0 0% 100%;
+    --popover-foreground: var(--color-foreground);
+    --primary: var(--color-primary);
+    --primary-foreground: 0 0% 100%;
+    --secondary: var(--color-secondary);
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 40% 96%;
+    --muted-foreground: var(--color-muted);
+    --accent: var(--color-accent);
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: var(--color-primary);
+  }
+
+  /* Icy Theme */
+  [data-theme="icy"] {
+    --color-primary: 199 89% 58%;
+    --color-secondary: 210 40% 96%;
+    --color-accent: 240 100% 70%;
+    --color-background: 210 40% 98%;
+    --color-foreground: 220 15% 20%;
+    --color-muted: 220 10% 55%;
+
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
+    --card: 0 0% 100%;
+    --card-foreground: var(--color-foreground);
+    --popover: 0 0% 100%;
+    --popover-foreground: var(--color-foreground);
+    --primary: var(--color-primary);
+    --primary-foreground: 0 0% 100%;
+    --secondary: var(--color-secondary);
+    --secondary-foreground: 220 15% 20%;
+    --muted: 210 40% 96%;
+    --muted-foreground: var(--color-muted);
+    --accent: var(--color-accent);
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: var(--color-primary);
+  }
+
+  /* Pastel Theme */
+  [data-theme="pastel"] {
+    --color-primary: 270 80% 75%;
+    --color-secondary: 190 80% 75%;
+    --color-accent: 30 90% 75%;
+    --color-background: 0 0% 100%;
+    --color-foreground: 220 15% 20%;
+    --color-muted: 220 10% 55%;
+
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
+    --card: 0 0% 100%;
+    --card-foreground: var(--color-foreground);
+    --popover: 0 0% 100%;
+    --popover-foreground: var(--color-foreground);
+    --primary: var(--color-primary);
+    --primary-foreground: 220 15% 20%;
+    --secondary: var(--color-secondary);
+    --secondary-foreground: 220 15% 20%;
+    --muted: 210 40% 96%;
+    --muted-foreground: var(--color-muted);
+    --accent: var(--color-accent);
+    --accent-foreground: 220 15% 20%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: var(--color-primary);
+  }
+
+  /* Midnight Theme */
+  [data-theme="midnight"] {
+    --color-primary: 260 90% 70%;
+    --color-secondary: 200 90% 60%;
+    --color-accent: 320 85% 65%;
+    --color-background: 230 35% 6%;
+    --color-foreground: 220 15% 94%;
+    --color-muted: 220 10% 65%;
+
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
+    --card: 230 30% 10%;
+    --card-foreground: var(--color-foreground);
+    --popover: 230 30% 10%;
+    --popover-foreground: var(--color-foreground);
+    --primary: var(--color-primary);
+    --primary-foreground: 230 35% 6%;
+    --secondary: var(--color-secondary);
+    --secondary-foreground: 230 35% 6%;
+    --muted: 230 25% 14%;
+    --muted-foreground: var(--color-muted);
+    --accent: var(--color-accent);
+    --accent-foreground: 230 35% 6%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 230 25% 16%;
+    --input: 230 25% 16%;
+    --ring: var(--color-primary);
+  }
 }
 
 @layer base {
@@ -218,6 +433,38 @@
 }
 
 @layer components {
+  /* Navbar rail link style: -------o */
+  .nav-rail {
+    position: relative;
+  }
+  .nav-rail::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 2px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .nav-rail::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -6px;
+    width: 8px;
+    height: 8px;
+    background-color: currentColor;
+    border-radius: 9999px;
+    transform: scale(0);
+    transition: transform 0.3s ease;
+  }
+  .nav-rail:hover::before { transform: scaleX(1); }
+  .nav-rail:hover::after { transform: scale(1); }
+  .nav-rail[data-active="true"]::before { transform: scaleX(1); }
+  .nav-rail[data-active="true"]::after { transform: scale(1); }
   /* Cyber button variants */
   .btn-cyber {
     background: linear-gradient(to right, hsl(var(--primary) / 0.2), hsl(var(--secondary) / 0.2));

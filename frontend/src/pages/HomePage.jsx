@@ -183,13 +183,13 @@ const HomePage = () => {
 
   return (
     <>
-  <div className="min-h-screen bg-white text-black">
+  <div className="min-h-screen bg-background text-foreground">
         <Navbar />
         
         {/* Hero Section - Black & White Only */}
         <section 
           ref={heroRef}
-          className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-20 bg-white"
+          className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-20 bg-background"
           style={{
             transform: `translate3d(${mousePosition.x * 10}px, ${mousePosition.y * 10}px, 0)`
           }}
@@ -231,9 +231,9 @@ const HomePage = () => {
             style={heroAnimation}
             className="relative z-10 text-center w-full max-w-6xl mx-auto"
           >
-            <h1 className="text-5xl md:text-8xl lg:text-9xl font-bold mb-8 text-black" style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 900 }}>
-              <span className="block text-black mb-2" style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 900, fontSize: '5rem' }}>Level Up Your</span>
-              <span className="block text-black" style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 900, fontSize: '3.5rem' }}>
+            <h1 className="text-5xl md:text-8xl lg:text-9xl font-bold mb-8 text-foreground" style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 900 }}>
+              <span className="block text-foreground mb-2" style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 900, fontSize: '5rem' }}>Level Up Your</span>
+              <span className="block text-foreground" style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 900, fontSize: '3.5rem' }}>
                 <ReactTyped
                   strings={[
                     'Cybersecurity Knowledge',
@@ -248,18 +248,18 @@ const HomePage = () => {
                 />
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
               Interactive quizzes, curated resources, and real-time challenges to strengthen your cybersecurity knowledge and skills.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link to="/quiz">
-                <Button size="lg" className="bg-black text-white hover:bg-gray-900 text-lg px-8 py-4 border-0">
+                <Button size="lg" className="bg-primary text-primary-foreground hover:opacity-90 text-lg px-8 py-4 border-0">
                   Take a Free Quiz
                   <ChevronRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
               <a href="#categories">
-                <Button variant="outline" size="lg" className="border-black bg-white text-black font-bold text-lg px-8 py-4 hover:bg-black hover:text-white hover:border-black transition-all duration-200">
+                <Button variant="outline" size="lg" className="border-border bg-card text-foreground font-bold text-lg px-8 py-4 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200">
                   Explore Categories
                 </Button>
               </a>
@@ -271,29 +271,29 @@ const HomePage = () => {
         <section ref={howItWorksRef} className="py-20 px-4 sm:px-6 lg:px-8 w-full">
           <div className="w-full max-w-7xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-black">How It Works</h2>
-              <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">How It Works</h2>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                 Get started with CyberVeer in three simple steps and begin your journey to cybersecurity mastery.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
               {steps.map((step, index) => (
-                <Card key={index} className="relative group transition-all duration-300 border border-gray-200 bg-white text-black hover:shadow-lg hover:border-black">
+                <Card key={index} className="relative group transition-all duration-300 border border-border bg-card text-foreground hover:shadow-lg hover:border-primary/50">
                   <CardHeader className="text-center">
-                    <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-black">
+                    <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-foreground">
                       {step.number}
                     </div>
-                    <CardTitle className="text-xl font-bold text-black">{step.title}</CardTitle>
+                    <CardTitle className="text-xl font-bold text-foreground">{step.title}</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
-                    <p className="text-gray-700">{step.description}</p>
+                    <p className="text-muted-foreground">{step.description}</p>
                   </CardContent>
                 </Card>
               ))}
             </div>
             <div className="text-center">
               <Link to="/quiz">
-                <Button size="lg" className="w-full md:w-auto text-white bg-black hover:bg-gray-800 transition-all duration-200 hover:scale-105">
+                <Button size="lg" className="w-full md:w-auto text-primary-foreground bg-primary hover:opacity-90 transition-all duration-200 hover:scale-105">
                   Start Your First Quiz
                   <Target className="ml-2 w-5 h-5" />
                 </Button>
@@ -307,26 +307,26 @@ const HomePage = () => {
           <animated.div style={categoriesAnimation} className="w-full max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{fontFamily: "'Inter', system-ui, sans-serif"}}>Quiz Categories</h2>
-              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                 Master cybersecurity across multiple domains with our comprehensive quiz categories.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
               {categories.map((category, index) => (
-                <Card key={index} className="group transition-all duration-300 border border-gray-200 bg-white text-black hover:shadow-lg hover:border-black hover:scale-105">
+                <Card key={index} className="group transition-all duration-300 border border-border bg-card text-foreground hover:shadow-lg hover:border-primary/50 hover:scale-105">
                   <CardHeader>
                     <div className="flex items-center space-x-3 mb-2">
-                      <div className="p-2 rounded-lg bg-gray-100">
-                        <category.icon className="w-6 h-6 text-black" />
+                      <div className="p-2 rounded-lg bg-muted">
+                        <category.icon className="w-6 h-6 text-foreground" />
                       </div>
-                      <CardTitle className="text-lg font-bold text-black">{category.title}</CardTitle>
+                      <CardTitle className="text-lg font-bold text-foreground">{category.title}</CardTitle>
                     </div>
-                    <CardDescription className="text-gray-700">{category.description}</CardDescription>
+                    <CardDescription className="text-muted-foreground">{category.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Link to={`/quiz?category=${category.slug}`}>
-                      <Button className="w-full text-white bg-black hover:bg-gray-800 transition-all duration-200 hover:scale-105">
+                    <Link to={`/quiz/category/${category.slug}`}>
+                      <Button className="w-full text-primary-foreground bg-primary hover:opacity-90 transition-all duration-200 hover:scale-105">
                         Take Quiz
                         <ChevronRight className="ml-2 w-4 h-4" />
                       </Button>
@@ -338,7 +338,7 @@ const HomePage = () => {
 
             <div className="text-center">
               <Link to="/categories">
-                <Button variant="outline" size="lg" className="border-gray-300 hover:border-black text-gray-700 hover:text-black transition-all duration-200 hover:scale-105">
+              <Button variant="outline" size="lg" className="border-border hover:border-primary text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105">
                   View All Categories
                 </Button>
               </Link>
@@ -353,7 +353,7 @@ const HomePage = () => {
           <div className="relative w-full max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{fontFamily: "'Inter', system-ui, sans-serif"}}>Why Choose CyberVeer</h2>
-              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                 Experience the most effective way to learn cybersecurity with our innovative platform.
               </p>
             </div>
@@ -361,18 +361,18 @@ const HomePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
               {benefitsTrail.map((style, index) => (
                 <animated.div key={index} style={style}>
-                  <Card className="h-full text-center transition-all duration-300 border border-gray-200 bg-white text-black hover:shadow-lg hover:border-black">
+                  <Card className="h-full text-center transition-all duration-300 border border-border bg-card text-foreground hover:shadow-lg hover:border-primary/50">
                     <CardHeader>
-                      <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                      <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
                         {(() => {
                           const IconComponent = benefitsData[index].icon;
-                          return <IconComponent className="w-8 h-8 text-black" />;
+                          return <IconComponent className="w-8 h-8 text-foreground" />;
                         })()}
                       </div>
-                      <CardTitle className="text-xl font-bold text-black">{benefitsData[index].title}</CardTitle>
+                      <CardTitle className="text-xl font-bold text-foreground">{benefitsData[index].title}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-700">{benefitsData[index].description}</p>
+                      <p className="text-muted-foreground">{benefitsData[index].description}</p>
                     </CardContent>
                   </Card>
                 </animated.div>
@@ -381,7 +381,7 @@ const HomePage = () => {
 
             <div className="text-center">
               <Link to="/signup">
-                <Button size="lg" className="text-white bg-black hover:bg-gray-800 transition-all duration-200 hover:scale-105">
+                <Button size="lg" className="text-primary-foreground bg-primary hover:opacity-90 transition-all duration-200 hover:scale-105">
                   Create Free Account
                   <Users className="ml-2 w-5 h-5" />
                 </Button>
@@ -395,15 +395,15 @@ const HomePage = () => {
           <div className="w-full max-w-4xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{fontFamily: "'Inter', system-ui, sans-serif"}}>Top Performers This Week</h2>
-              <p className="text-lg text-gray-400">
+              <p className="text-lg text-muted-foreground">
                 See how you stack up against cybersecurity experts worldwide.
               </p>
             </div>
 
-            <Card className="transition-all duration-300 border border-gray-200 bg-white text-black hover:shadow-lg hover:border-black">
+            <Card className="transition-all duration-300 border border-border bg-card text-foreground hover:shadow-lg hover:border-primary/50">
               <CardHeader>
-                <CardTitle className="text-center flex items-center justify-center font-bold text-black">
-                  <Trophy className="w-6 h-6 text-black mr-2" />
+                <CardTitle className="text-center flex items-center justify-center font-bold text-foreground">
+                  <Trophy className="w-6 h-6 text-foreground mr-2" />
                   Blog
                 </CardTitle>
               </CardHeader>
@@ -415,22 +415,22 @@ const HomePage = () => {
                       className="flex items-center justify-between p-4 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-colors"
                     >
                       <div className="flex items-center space-x-4">
-                        <div className={`px-3 py-1 rounded-full text-xs font-bold bg-gray-200 text-black`}>
+                        <div className={`px-3 py-1 rounded-full text-xs font-bold bg-muted text-foreground`}>
                           #{player.rank}
                         </div>
-                        <span className="font-medium text-black">{player.name}</span>
+                        <span className="font-medium text-foreground">{player.name}</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Star className="w-4 h-4 text-black" />
-                        <span className="font-bold text-black">{player.score}</span>
+                        <Star className="w-4 h-4 text-foreground" />
+                        <span className="font-bold text-foreground">{player.score}</span>
                       </div>
                     </div>
                   ))}
                 </div>
                 
                 <div className="text-center mt-6">
-                  <Link to="/Blog">
-                    <Button variant="outline" className="border-gray-300 hover:border-black text-gray-700 hover:text-black transition-all duration-200 hover:scale-105">
+                  <Link to="/blog">
+                    <Button variant="outline" className="border-border hover:border-primary text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105">
                       View Full Blog
                     </Button>
                   </Link>

@@ -6,6 +6,8 @@ import AuthPage from "./pages/AuthPage";
 import Categories from "./pages/Categories";
 import CategoryDetail from "./pages/CategoryDetail";
 import Quiz from "./pages/Quiz";
+import QuizCategorySelector from "./components/QuizCategorySelector";
+import QuizTypeSelection from "./components/QuizTypeSelection";
 import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
 import WriteBlog from "./pages/WriteBlog";
@@ -54,12 +56,20 @@ const browserRouter = createBrowserRouter([
     path: "/quiz",
     element: (
       <ProtectedRoutes>
-        <Quiz />
+        <QuizCategorySelector />
       </ProtectedRoutes>
     ),
   },
   {
-    path: "/quiz/:slug",
+    path: "/quiz/category/:categoryId",
+    element: (
+      <ProtectedRoutes>
+        <QuizTypeSelection />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/quiz/:categoryId/:quizType",
     element: (
       <ProtectedRoutes>
         <Quiz />
