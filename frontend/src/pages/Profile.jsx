@@ -134,15 +134,17 @@ const Profile = () => {
                   <Avatar className="h-24 w-24 ring-4 ring-primary/20">
                     <AvatarImage
                       src={
-                        user.avatar ||
-                        `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                          user.username
-                        )}&background=random`
+                        user?.avatar && user.avatar.trim() !== ''
+                          ? user.avatar
+                          : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                              user?.username || user?.fullName || 'User'
+                            )}&background=random`
                       }
                       alt="Profile"
+                      onError={(e)=>{ e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.username || user?.fullName || 'User')}&background=random`; }}
                     />
                     <AvatarFallback className="text-lg font-bold bg-gradient-cyber text-primary-foreground">
-                      {user.fullName
+                      {user?.fullName
                         ?.split(" ")
                         .map((n) => n[0])
                         .join("")}

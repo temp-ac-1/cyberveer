@@ -16,12 +16,13 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const path = location.pathname;
   const navigation = [
-    { name: 'Home', href: '/', current: location.pathname === '/' },
-    { name: 'Categories', href: '/categories', current: location.pathname === '/categories' },
-    { name: 'Blog', href: '/blog', current: location.pathname === '/blog' },
-    { name: 'Quiz', href: '/quiz', current: location.pathname === '/quiz' },
-    { name: 'About', href: '/about-us', current: location.pathname === '/about-us' },
+    { name: 'Home', href: '/', current: path === '/' },
+    { name: 'Categories', href: '/categories', current: path.startsWith('/categories') },
+    { name: 'Blog', href: '/blog', current: path.startsWith('/blog') },
+    { name: 'Quiz', href: '/quiz', current: path.startsWith('/quiz') },
+    { name: 'About', href: '/about-us', current: path.startsWith('/about-us') },
   ];
 
   return (

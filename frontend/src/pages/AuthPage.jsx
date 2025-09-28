@@ -378,7 +378,7 @@ const AuthPage = () => {
           </motion.div>
           
           <div>
-            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <CardTitle className="text-2xl font-bold text-foreground">
               Secure Access
             </CardTitle>
             <CardDescription className="text-muted-foreground">

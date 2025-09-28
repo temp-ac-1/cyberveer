@@ -44,10 +44,11 @@ const Categories = () => {
   const filteredCategories = useMemo(() => {
     if (!categories) return [];
 
-    let filtered = categories.filter((cat) => {
+    let safeArray = Array.isArray(categories) ? categories : Object.values(categories || {});
+    let filtered = safeArray.filter((cat) => {
       const matchesSearch =
-        cat.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        cat.description.toLowerCase().includes(searchQuery.toLowerCase());
+        (cat.title || cat.name || '')?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (cat.description || '')?.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesDifficulty =
         difficultyFilter === "all" || cat.difficulty === difficultyFilter;
@@ -58,13 +59,13 @@ const Categories = () => {
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "popularity":
-          return b.participants - a.participants;
+          return (b.participants || 0) - (a.participants || 0);
         case "rating":
-          return b.rating - a.rating;
+          return (b.rating || 0) - (a.rating || 0);
         case "progress":
-          return b.overallProgress - a.overallProgress;
+          return (b.overallProgress || 0) - (a.overallProgress || 0);
         case "alphabetical":
-          return a.title.localeCompare(b.title);
+          return (a.title || a.name || '').localeCompare(b.title || b.name || '');
         default:
           return 0;
       }
@@ -183,22 +184,21 @@ const Categories = () => {
                 ))
               : filteredCategories.map((category) => (
                   <Card
-                    key={category._id}
+                    key={category._id || category.id || category.slug}
                     className="group h-full hover:shadow-glow transition-all duration-300 border-border/50 hover:border-primary/30 hover:scale-105"
                   >
                     <CardHeader>
                       <div className="flex items-center justify-between mb-2">
-                        <div className="text-3xl">{category.avatar || "📁"}</div>
-                        <Badge className={getDifficultyColor(category.difficulty)}>
-                          {category.difficulty}
+                        <div className="text-3xl">{category.avatar || category.icon || "📁"}</div>
+                        <Badge className={getDifficultyColor(category.difficulty || 'Beginner')}>
+                          {category.difficulty || 'Beginner'}
                         </Badge>
                       </div>
-                      <CardTitle className="text-lg group-hover:text-primary transition-colors">
-                        {console.log(category)}
-                        {category.title}
+                      <CardTitle className="text-lg text-foreground group-hover:text-primary transition-colors">
+                        {category.title ?? ''}
                       </CardTitle>
                       <CardDescription className="text-sm line-clamp-2">
-                        {category.description}
+                        {category.description || 'No description available.'}
                       </CardDescription>
                     </CardHeader>
 
@@ -206,9 +206,9 @@ const Categories = () => {
                       <div>
                         <div className="flex items-center justify-between text-sm mb-1">
                           <span>Progress</span>
-                          <span>{category.overallProgress}%</span>
+                          <span>{(category.overallProgress || 0)}%</span>
                         </div>
-                        <Progress value={category.overallProgress} className="h-2" />
+                        <Progress value={(category.overallProgress || 0)} className="h-2" />
                       </div>
 
                       <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -218,19 +218,19 @@ const Categories = () => {
                         </div>
                         <div className="flex items-center">
                           <Users className="w-3 h-3 mr-1" />
-                          {category.participants.toLocaleString()}
+                          {(category.participants || 0).toLocaleString()}
                         </div>
                         <div className="flex items-center">
                           <Star className="w-3 h-3 mr-1 fill-current text-yellow-500" />
-                          {category.rating}
+                          {(category.rating || 0)}
                         </div>
                       </div>
 
                       <div className="text-sm text-muted-foreground">
-                        {category.completedQuizzes}/{category.totalQuizzes} quizzes completed
+                        {(category.completedQuizzes || 0)}/{(category.totalQuizzes || 0)} quizzes completed
                       </div>
 
-                      <Link to={`/category/${category.slug}`} className="block">
+                      <Link to={`/category/${category.slug || category._id || category.id}`} className="block">
                         <Button className="w-full group-hover:shadow-glow">
                           Explore Now
                           <ChevronRight className="ml-2 w-4 h-4" />

@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useSelector } from "react-redux";
+import Navbar from "@/components/Navbar";
 
 const QuizCategorySelector = () => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const QuizCategorySelector = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Navbar />
       <div className="pt-20 pb-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}

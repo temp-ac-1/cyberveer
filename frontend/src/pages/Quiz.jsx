@@ -190,6 +190,59 @@ const Quiz = () => {
           difficulty: 'Intermediate',
           points: 15
         }
+      ] : []),
+      // Phishing-specific (category slug or title contains 'phish')
+      ...((categoryId?.toLowerCase?.().includes('phish') || (category?.title || '')?.toLowerCase().includes('phish')) ? [
+        {
+          id: 'p1',
+          type: 'multiple-choice',
+          question: 'Which is a common sign of a phishing email?',
+          options: ['Personalized greeting', 'Mismatched URLs', 'Proper grammar', 'Company domain sender'],
+          correctAnswer: 1,
+          explanation: 'Phishing emails often use mismatched or lookalike URLs to trick users.',
+          difficulty: 'Beginner',
+          points: 10
+        },
+        {
+          id: 'p2',
+          type: 'multiple-choice',
+          question: 'What should you do if an email asks for your password?',
+          options: ['Reply with password', 'Click link and login', 'Ignore and report to IT', 'Forward to friends'],
+          correctAnswer: 2,
+          explanation: 'Never share passwords by email; report suspicious requests to your IT/security team.',
+          difficulty: 'Beginner',
+          points: 10
+        },
+        {
+          id: 'p3',
+          type: 'multiple-choice',
+          question: 'A CEO urgently requests gift cards over email. This is likely:',
+          options: ['Normal request', 'Spear phishing', 'Routine audit', 'Spam'],
+          correctAnswer: 1,
+          explanation: 'This is a common spear-phishing scenario impersonating executives.',
+          difficulty: 'Intermediate',
+          points: 15
+        },
+        {
+          id: 'p4',
+          type: 'multiple-choice',
+          question: 'Best immediate action after clicking a suspicious link?',
+          options: ['Power off PC', 'Change wallpaper', 'Disconnect network and inform IT', 'Ignore if nothing happened'],
+          correctAnswer: 2,
+          explanation: 'Disconnect to limit impact and inform IT for incident response.',
+          difficulty: 'Intermediate',
+          points: 15
+        },
+        {
+          id: 'p5',
+          type: 'multiple-choice',
+          question: 'DMARC, SPF, and DKIM help with:',
+          options: ['Encrypting data at rest', 'Email authentication', 'VPN tunneling', 'Disk quotas'],
+          correctAnswer: 1,
+          explanation: 'They are mechanisms for authenticating email and reducing spoofing.',
+          difficulty: 'Advanced',
+          points: 20
+        }
       ] : [])
     ];
 
@@ -205,8 +258,32 @@ const Quiz = () => {
       });
     }
 
-    // Avoid infinite loop if questions empty -> provide graceful fallback
-    if (questions.length === 0) return [];
+    // Ensure minimum MCQs per topic (>=5) and graceful fallback when empty
+    if (quizType === 'mcq') {
+      // If no MCQs found, seed generic MCQs for this category
+      if (questions.length === 0) {
+        const baseTitle = (category?.title || 'This topic');
+        questions = [
+          {
+            id: 'g1', type: 'multiple-choice',
+            question: `Which statement is true about ${baseTitle}?`,
+            options: ['It is unrelated to security', `It involves key security concepts`, 'It is only hardware', 'It is deprecated'],
+            correctAnswer: 1, explanation: `${baseTitle} covers security concepts relevant to the category.`, difficulty: 'Beginner', points: 10
+          },
+          { id: 'g2', type: 'multiple-choice', question: `A safe practice in ${baseTitle} is:`, options: ['Sharing passwords', 'Using MFA', 'Ignoring updates', 'Clicking unknown links'], correctAnswer: 1, explanation: 'MFA reduces account takeover risk.', difficulty: 'Beginner', points: 10 },
+          { id: 'g3', type: 'multiple-choice', question: `What best describes a risk in ${baseTitle}?`, options: ['No threats exist', 'Human error only', 'Multiple threat vectors', 'Only physical risks'], correctAnswer: 2, explanation: 'Threats can be technical, human, and process-related.', difficulty: 'Intermediate', points: 15 },
+          { id: 'g4', type: 'multiple-choice', question: `First response to a suspected incident in ${baseTitle}:`, options: ['Publicly post it', 'Disconnect affected system', 'Delete logs', 'Ignore it'], correctAnswer: 1, explanation: 'Containment limits damage and preserves evidence.', difficulty: 'Intermediate', points: 15 },
+          { id: 'g5', type: 'multiple-choice', question: `A key control in ${baseTitle} is:`, options: ['Weak passwords', 'Least privilege', 'Open ports everywhere', 'No monitoring'], correctAnswer: 1, explanation: 'Least privilege reduces blast radius.', difficulty: 'Advanced', points: 20 }
+        ];
+      }
+      // Top-up to ensure at least 5 MCQs
+      const minMcq = 5;
+      while (questions.length < minMcq) {
+        const clone = { ...questions[questions.length - 1] };
+        clone.id = `${clone.id}-x${questions.length}`;
+        questions.push(clone);
+      }
+    }
 
     // Add more questions if needed to meet minimum count
     const minQuestions = quizType === 'mixed' ? 15 : Math.max(questions.length, 8);

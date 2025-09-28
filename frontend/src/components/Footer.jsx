@@ -50,7 +50,7 @@ const Footer = () => {
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/70 to-transparent shadow-[0_0_8px_hsl(var(--primary)_/_0.3)] animate-pulse" />
 
       {/* Main footer */}
-      <div className="relative z-10 w-full px-6 sm:px-8 lg:px-12 py-14 mx-auto max-w-7xl">
+      <div className="relative z-10 w-full px-6 sm:px-8 lg:px-12 py-14">
         {/* Top section */}
         <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-12 mb-16">
           {/* Brand */}

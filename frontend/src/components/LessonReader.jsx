@@ -34,14 +34,15 @@ const LessonReader = ({ lessonId, onClose }) => {
   // 🔹 get lessons from redux
   const lessons = useSelector((state) => state.lessons.lessonsBySubCategory);
 
-  // 🔹 pick current lesson
-  const currentLesson = lessons?.[currentLessonIndex];
+  // 🔹 normalize and pick current lesson safely
+  const safeLessons = Array.isArray(lessons) ? lessons : [];
+  const currentLesson = safeLessons[currentLessonIndex] || safeLessons[0] || {};
 
   // 🔹 progress calculation
   const completedLessons =
-    lessons?.filter((lesson) => lesson?.completed).length || 0;
+    safeLessons.filter((lesson) => lesson?.completed).length || 0;
   const progressPercentage =
-    lessons?.length > 0 ? (completedLessons / lessons.length) * 100 : 0;
+    safeLessons.length > 0 ? (completedLessons / safeLessons.length) * 100 : 0;
 
   // 🔹 pagination logic
   const WORDS_PER_PAGE = 400;
@@ -80,7 +81,7 @@ const LessonReader = ({ lessonId, onClose }) => {
 
   // 🔹 lesson navigation
   const handleNextLesson = () => {
-    if (currentLessonIndex < lessons.length - 1) {
+    if (currentLessonIndex < safeLessons.length - 1) {
       setIsFlipping(true);
       setTimeout(() => {
         setCurrentLessonIndex((i) => i + 1);
@@ -125,7 +126,7 @@ const LessonReader = ({ lessonId, onClose }) => {
   };
 
   // 🔹 handle loading / empty state
-  if (!lessons || lessons.length === 0) {
+  if (!safeLessons || safeLessons.length === 0) {
     return (
       <div className="flex items-center justify-center h-64">
         <p className="text-muted-foreground">Loading lessons...</p>
@@ -156,20 +157,20 @@ const LessonReader = ({ lessonId, onClose }) => {
                     </CardTitle>
                     <div className="flex items-center gap-2 mt-1">
                       <Badge
-                        className={getDifficultyColor(currentLesson.difficulty)}
+                        className={getDifficultyColor(currentLesson?.difficulty || "Beginner")}
                       >
-                        {currentLesson.difficulty}
+                        {currentLesson?.difficulty || "Beginner"}
                       </Badge>
                       <span className="text-sm text-muted-foreground flex items-center">
                         <Clock className="w-4 h-4 mr-1" />
-                        {currentLesson.estimatedTime}
+                        {currentLesson?.estimatedTime || "—"}
                       </span>
                     </div>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-sm text-muted-foreground">
-                    Lesson {currentLessonIndex + 1} of {lessons.length}
+                    Lesson {currentLessonIndex + 1} of {safeLessons.length}
                   </div>
                   <div className="text-sm font-medium">
                     {completedLessons}/{lessons.length} Completed
@@ -186,15 +187,15 @@ const LessonReader = ({ lessonId, onClose }) => {
               <div className="max-w-none min-h-[400px]">
                 <h1 className="text-3xl font-bold mb-6 flex items-center gap-3">
                   <BookOpen className="w-8 h-8" />
-                  {currentLesson.title}
-                  {currentLesson.completed && (
+                  {currentLesson?.title || "Lesson"}
+                  {currentLesson?.completed && (
                     <CheckCircle className="w-6 h-6 text-green-500" />
                   )}
                 </h1>
 
                 <div className="prose prose-lg prose-slate dark:prose-invert max-w-none leading-relaxed">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {pages[currentPage] || currentLesson.content}
+                    {pages[currentPage] || currentLesson?.content || ""}
                   </ReactMarkdown>
                 </div>
 
@@ -246,7 +247,7 @@ const LessonReader = ({ lessonId, onClose }) => {
 
                   <Button
                     onClick={handleNextLesson}
-                    disabled={currentLessonIndex === lessons.length - 1}
+                    disabled={currentLessonIndex === safeLessons.length - 1}
                   >
                     Next Lesson
                     <ChevronRight className="w-4 h-4 ml-1" />

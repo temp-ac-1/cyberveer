@@ -85,6 +85,13 @@ const Blog = () => {
   const [viewMode, setViewMode] = useState("grid");
   const articlesPerPage = 9;
 
+  // avatar fallback resolver
+  const resolveAvatar = (avatarUrl, name) => {
+    const fallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(name || "User")}&background=random&color=fff`;
+    if (avatarUrl && avatarUrl.trim() !== "") return avatarUrl;
+    return fallback;
+  };
+
   // Redux blogs
   const { featured, all, loading } = useSelector(
     (state) =>
@@ -398,13 +405,16 @@ const sortedArticles = [...filteredArticles].sort((a, b) => {
                               </Badge>
                             </div>
                           )}
-                          <CardHeader className="pb-4">
+                          <CardHeader className={`pb-4 ${article.featured || article.trending ? 'pt-10' : ''}`}>
                             <div className="flex items-center gap-3 mb-4">
                               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary p-0.5">
                                 <img
-                                  src={article.author?.avatar || "/api/placeholder/40/40"}
+                                  src={resolveAvatar(article.author?.avatar, article.author?.fullname)}
                                   alt={article.author?.fullname || "Author"}
                                   className="w-full h-full rounded-full bg-card object-cover"
+                                  loading="lazy"
+                                  referrerPolicy="no-referrer"
+                                  onError={(e)=>{ e.currentTarget.src = resolveAvatar('', article.author?.fullname); }}
                                 />
                               </div>
                               <div>
@@ -493,9 +503,12 @@ const sortedArticles = [...filteredArticles].sort((a, b) => {
                                 <div className="flex items-center gap-2 mb-2">
                                   <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-secondary p-0.5">
                                     <img
-                                      src={article.author?.avatar || "/api/placeholder/40/40"}
+                                      src={resolveAvatar(article.author?.avatar, article.author?.name)}
                                       alt={article.author?.name || "Author"}
                                       className="w-full h-full rounded-full bg-card object-cover"
+                                      loading="lazy"
+                                      referrerPolicy="no-referrer"
+                                      onError={(e)=>{ e.currentTarget.src = resolveAvatar('', article.author?.name); }}
                                     />
                                   </div>
                                   <span className="text-sm text-muted-foreground">
@@ -532,9 +545,12 @@ const sortedArticles = [...filteredArticles].sort((a, b) => {
                               <div className="flex items-center gap-3 mb-4">
                                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary p-0.5">
                                   <img
-                                    src={article.author?.avatar || "/api/placeholder/40/40"}
+                                    src={resolveAvatar(article.author?.avatar, article.author?.fullname)}
                                     alt={article.author?.fullname || "Author"}
                                     className="w-full h-full rounded-full bg-card object-cover"
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer"
+                                    onError={(e)=>{ e.currentTarget.src = resolveAvatar('', article.author?.fullname); }}
                                   />
                                 </div>
                                 <div>

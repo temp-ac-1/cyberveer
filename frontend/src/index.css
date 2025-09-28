@@ -1,4 +1,12 @@
 @import "tailwindcss";
+
+:root {
+  --app-font: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+html, body {
+  font-family: var(--app-font);
+}
 /* Tailwind v4.1: custom keyframes (moved out of @theme for linter compatibility) */
 @keyframes accordion-down {
   from { height: 0; }

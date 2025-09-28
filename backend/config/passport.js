@@ -45,7 +45,9 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const email = profile.emails[0].value;
+        const email =
+          (profile.emails && profile.emails[0] && profile.emails[0].value) ||
+          `${profile.id}@google-temp.com`;
 
         let user = await User.findOne({ email });
 
@@ -53,11 +55,19 @@ passport.use(
           // Create new user
           user = await User.create({
             email,
-            username: await generateUniqueUsername(profile.displayName),
-            fullname: profile.displayName,
-            isVerified: true, // social logins are usually auto-verified
-            avatar: profile.photos[0]?.value || "",
-            password: undefined, // or leave blank and prevent local login for this user
+            username: await generateUniqueUsername(
+              profile.displayName || profile.name?.givenName || "user"
+            ),
+            fullname:
+              profile.displayName ||
+              `${profile.name?.givenName || ""} ${
+                profile.name?.familyName || ""
+              }`.trim(),
+            isVerified: true,
+            avatar:
+              (profile.photos && profile.photos[0] && profile.photos[0].value) ||
+              "",
+            password: undefined,
             provider: "google",
           });
         }
@@ -89,8 +99,8 @@ passport.use(
           (profile.emails && profile.emails[0] && profile.emails[0].value) ||
           `${profile.username}@github-temp.com`;
         const githubUsername = profile.username;
-        const githubFullName = profile.displayName || profile._json.name || '';
-        const githubAvatar = profile.photos[0].value|| "";
+        const githubFullName = profile.displayName || profile._json?.name || '';
+        const githubAvatar = (profile.photos && profile.photos[0] && profile.photos[0].value) || "";
         let user = await User.findOne({ email });
 
         if (!user) {

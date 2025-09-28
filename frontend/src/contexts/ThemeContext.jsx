@@ -24,18 +24,18 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [currentTheme, setCurrentTheme] = useState('cyber');
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('cyberveer-theme');
-    if (savedTheme && themes.find(t => t.name === savedTheme)) {
-      setCurrentTheme(savedTheme);
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    try {
+      const saved = localStorage.getItem('cyberveer-theme');
+      return saved && themes.find(t => t.name === saved) ? saved : 'cyber';
+    } catch {
+      return 'cyber';
     }
-  }, []);
+  });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', currentTheme);
-    localStorage.setItem('cyberveer-theme', currentTheme);
+    try { localStorage.setItem('cyberveer-theme', currentTheme); } catch {}
   }, [currentTheme]);
 
   const setTheme = (theme) => {
