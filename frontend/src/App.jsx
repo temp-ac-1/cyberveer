@@ -69,7 +69,7 @@ const browserRouter = createBrowserRouter([
     ),
   },
   {
-    path: "/quiz/:categoryId/:quizType",
+    path: "/quiz/take/:categoryId/:quizType",
     element: (
       <ProtectedRoutes>
         <Quiz />

@@ -1,12 +1,13 @@
 import express from "express";
 import {
   getQuizzesByCategory,
-  getQuizById,
   submitQuiz,
   createLessonQuiz,
   createSubcategoryQuiz,
   createCategoryQuiz,
+  getQuizByCategoryId,
 } from "../controllers/quiz.controller.js";
+import { protect } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -14,10 +15,10 @@ const router = express.Router();
 router.get("/categories/:slug", getQuizzesByCategory);
 
 // Public: get quiz details
-router.get("/:id", getQuizById);
+router.get("/:categoryId/:quizType", getQuizByCategoryId);
 
 // Auth required: submit quiz
-router.post("/:id/submit", submitQuiz);
+router.post("/:id/submit", protect, submitQuiz);
 
 // Create quizzes at different levels
 router.post("/lesson", createLessonQuiz);

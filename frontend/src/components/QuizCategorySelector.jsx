@@ -35,8 +35,8 @@ const QuizCategorySelector = () => {
     }
   };
 
-  const handleCategorySelect = (categorySlug) => {
-    navigate(`/quiz/category/${categorySlug}`);
+  const handleCategorySelect = (categoryId) => {
+    navigate(`/quiz/category/${categoryId}`);
   };
 
   return (
@@ -62,7 +62,7 @@ const QuizCategorySelector = () => {
               <Card
                 key={category._id}
                 className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-border/50 hover:border-primary/30"
-                onClick={() => handleCategorySelect(category.slug)}
+                onClick={() => handleCategorySelect(category._id)}
               >
                 <CardHeader>
                   <div className="flex items-center gap-4 mb-3">
@@ -100,7 +100,7 @@ const QuizCategorySelector = () => {
                   <Button
                     className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
                     variant="outline"
-                    onClick={() => handleCategorySelect(category.slug)}
+                    onClick={() => handleCategorySelect(category._id)}
                   >
                     Start Quiz
                     <ChevronRight className="w-4 h-4 ml-2" />

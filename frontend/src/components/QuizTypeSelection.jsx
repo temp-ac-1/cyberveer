@@ -24,7 +24,7 @@ const QuizTypeSelection = () => {
   const categories = useSelector((state) => state.category.categories);
 
   const category = categoryId
-    ? categories.find((cat) => cat.slug === categoryId)
+    ? categories.find((cat) => cat._id === categoryId)
     : null;
 
   const quizTypes = [
